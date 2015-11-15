@@ -1,0 +1,22 @@
+﻿
+@model ForumDisscussion.Models.Comment
+
+@{
+    ViewBag.Title = "PostComment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>PostComment</h2>
+
+
+@using (Html.BeginForm("PostComment", "ForumQuestionAns"))
+{
+    <div>
+        <label>Comment</label>@Html.TextAreaFor(m=>m.CommentMsg)
+        @Html.ValidationMessageFor(m=>m.CommentMsg)
+    </div>
+    <div>
+       <span><input type="submit" value="Ppost"/></span>@Html.ActionLink("Close","PostAnswerForAnsweredQuestion","ForumQuestionAns",new{@class="btn btn-info"})<span></span> 
+    </div>
+}

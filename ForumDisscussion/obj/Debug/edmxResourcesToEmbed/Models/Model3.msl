@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ForumDataBaseModel1StoreContainer" CdmEntityContainer="TempRatingDbContext">
+    <EntitySetMapping Name="TempRatingTable">
+      <EntityTypeMapping TypeName="ForumDataBaseModel1.TempRatingTable">
+        <MappingFragment StoreEntitySet="TempRatingTable">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="PreviousTotRating" ColumnName="PreviousTotRating" />
+          <ScalarProperty Name="PresentRating" ColumnName="PresentRating" />
+          <ScalarProperty Name="PrevTotRater" ColumnName="PrevTotRater" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

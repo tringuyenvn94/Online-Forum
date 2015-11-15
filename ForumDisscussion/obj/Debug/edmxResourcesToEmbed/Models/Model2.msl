@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ForumDbModelStoreContainer" CdmEntityContainer="VirtualDbContext">
+    <EntitySetMapping Name="TemporaryTables">
+      <EntityTypeMapping TypeName="ForumDbModel.TemporaryTable">
+        <MappingFragment StoreEntitySet="TemporaryTable">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TempId" ColumnName="TempId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserPostedQuestions">
+      <EntityTypeMapping TypeName="ForumDbModel.UserPostedQuestion">
+        <MappingFragment StoreEntitySet="UserPostedQuestion">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Question" ColumnName="Question" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="AnsUserId" ColumnName="AnsUserId" />
+          <ScalarProperty Name="Answer" ColumnName="Answer" />
+          <ScalarProperty Name="ReplyUser" ColumnName="ReplyUser" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="QuesPostDate" ColumnName="QuesPostDate" />
+          <ScalarProperty Name="Category" ColumnName="Category" />
+          <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+          <ScalarProperty Name="TotalReplies" ColumnName="TotalReplies" />
+          <ScalarProperty Name="TotalAnswer" ColumnName="TotalAnswer" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

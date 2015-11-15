@@ -1,0 +1,49 @@
+﻿@model ForumDisscussion.Models.EditViwModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+<link href="~/CSS/gh-buttons.css" rel="stylesheet" />
+
+<style>
+ 
+    .g{height: 400px}
+</style>
+
+
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>EditViwModel</legend>
+
+        <div class="editor-label">
+        <i class="icon-edit"></i>    Edit Your Reply
+        </div><br/>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Reply,new {style="width: 70%;height: 280px"})
+            @Html.ValidationMessageFor(model => model.Reply)
+        </div>
+        <br/>
+        <p>
+           
+            <button type="submit" class="btn btn-info" id="editButton">
+                <i class="icon-edit icon-white"></i> Save
+            </button>
+          @Html.ActionLink("Back", "PostComment", "Home" ,new {id= ViewBag.ansId },new{@class = " button icon arrowleft backLink"})
+
+        </p>
+    </fieldset>
+}
+
+
+<script>
+    $("#editButton").css('color', 'white');
+
+    $("#editButton,.backLink").click(function () {
+        loading();
+    });
+   
+
+</script>

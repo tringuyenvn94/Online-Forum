@@ -1,0 +1,71 @@
+﻿@model ForumDisscussion.Models.UsersAnsPost
+
+@{
+    ViewBag.Title = "PostAnswer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<div>
+    <img src="~/Png/help_circle_blue.png" width="35"/>
+    <tg id="qurl"> @ViewData["GetQuestionByID"]</tg>
+</div>
+
+<br/><br/>
+
+@using (Html.BeginForm("PostAnswer","ForumQuestionAns",FormMethod.Post))
+{
+    
+    <div id="Ans">
+        <img src="~/Png/mail_post.png" width="45" id="ansPng"/>
+      
+        @ViewBag.displayPostedAns
+    </div>
+    
+       <div class="editor-label">
+  
+                          <label>          <img src="~/Images/ic_post_plus.png" width="60"/>Post Your Answer</label>
+                      </div>
+                      <div class="editor-field">
+   
+                          @Html.TextAreaFor(model => model.Answer,new{id="msgBox"})
+                          @Html.ValidationMessageFor(model => model.Answer)
+                      </div>
+                      <br/>
+                   
+                      <input type="submit" value="Post" id="mesPostButton" class="btn btn-warning"/>
+                              
+}
+
+
+
+
+
+
+
+
+
+<script>
+    
+        $("#mesPostButton").click(function (){
+        var msbox = $("#msgBox").val();
+        if (msbox != "") {
+       
+            JavascriptFunction();
+          
+        }
+   
+        });
+        function ClearMsgBox() {
+            $("#msgBox").empty();
+        }
+        $("#op").ready(function () {
+            ClearMsgBox();
+        });
+        $(function() {
+            $("#ansPng").hide();
+        } );
+
+</script>

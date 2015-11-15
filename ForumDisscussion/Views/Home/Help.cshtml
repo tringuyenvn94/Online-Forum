@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Help";
+}
+<style>
+     p{font-family: Courier New;font-size: 18px}     
+</style>
+
+<div class="bs-docs-example">
+            <ul id="myTab" class="nav nav-tabs">
+                <li class="active"><a href="#home" data-toggle="tab">
+            
+                  How To Post Question  <img src="~/Png/FAQ-icon.png" width="30px" />
+                                   </a></li>
+                <li><a href="#profile" data-toggle="tab">How To Serach Forum Question<img src="~/Png/FAQ-icon.png" width="30px" />
+
+                    </a></li>
+                       <li><a href="#Re" data-toggle="tab">How To Post Reply<img src="~/Png/FAQ-icon.png" width="30px" />
+
+                    </a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+              <div class="tab-pane fade in active" id="home">
+                  <p>
+                      <img src="~/Png/exclamation_circle.png" width="40px" />       For <b>Posting</b> Question in our Forum at first you need to <b>Login</b> first. Then you need
+                      to select <b>Category</b>(e.g <b>ASP.Net MVC,ASP.Net Webform,C# Winform,C# WPF,PHP,JAVA,Jquery,HTML,XML</b>) from dropdown menu depending on your <b>Question.</b>
+                      Then You need to write your <b>Question</b> on Question Box.
+                      Finally By clicking <b>Poat</b> button you will be able to <b>Post</b> Question in our forum
+                  
+                  
+                         </
+                         p>
+             
+              
+              </div>
+                <div class="tab-pane fade" id="profile">
+                    <p>
+                        <img src="~/Png/search.png" width="30px"/>       For <b>Searching</b>  forum question you need to enter <b>category</b>   in search box.<br />You can enter
+                        <b>Full</b>    category name or <b>First</b> few characters.And then by clicking search button you will get your desired <b>Question</b>        
+                    </p>
+                </div>
+                  <div class="tab-pane fade" id="Re">
+                  <p>
+                      <img src="~/Png/chat_64.png" width="30px"/>    For posting a reply you need to <b>login</b> first.Then you need to <b>select</b> a <b>question</b> <br />for which you want to <b>post reply</b> .
+
+                      You can <b>select</b> question from <b><a href="@Url.Action("Index", "Home")"><u>Home</u></a></b> page or<br/>
+                      from <b>FORUM QUESTIONS</b> menu you can select any <b>one</b> of tow <b>submenues</b> .
+                  </p>
+              </div>
+                <div class="tab-pane fade" id="dropdown1">
+                   
+                  <p>
+             
+               
+               
+                </div>
+              <div class="tab-pane fade" id="dropdown2">
+                  <p>
+   <script>
+       $(".link").click(function () {
+        JavascriptFunction();
+
+    });
+</script>
+                  </p>
+              </div>
+            </div>
+          </div>

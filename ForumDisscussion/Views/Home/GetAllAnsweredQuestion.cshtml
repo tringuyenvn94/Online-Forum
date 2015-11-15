@@ -1,0 +1,116 @@
+﻿@using ForumDisscussion.Models
+@{
+    ViewBag.Title = "GetAllAnsweredQuestion";
+}
+
+<script src="~/KendoUI/jquery.min.js"></script>
+<script src="~/KendoUI/kendo.all.min.js"></script>
+<h2>Answered Question List</h2>
+@{
+    
+    
+    var db = new ForumDataBaseConnectionContext();
+
+
+    var answereAllAnsweredQuestionId = from a in db.Answers
+                                       select a.QuestionId;
+    var answeredQuestionIdList = new List<int>();
+
+
+    foreach (var qid in answereAllAnsweredQuestionId)
+    {
+        var chechIsExist = answeredQuestionIdList.Contains(qid);
+        if (chechIsExist == false)
+        {
+            answeredQuestionIdList.Add(qid);
+
+
+        }
+
+    }
+    <div>
+    <table id="answeredQuestionKendoGrid">
+        <thead>
+            <tr><th>Answered Questions</th></tr>
+        </thead><tbody>
+        @foreach (var i in answeredQuestionIdList)
+        {
+       
+            var countAnswerForEachId = db.Answers.Count(m => m.QuestionId.Equals(i));
+
+            var anweredQuestionInfo = from q in db.Questions
+                                      join u in db.ForumUser on q.UserId equals u.UserId
+                                      join c in db.Category on q.CategoryId equals c.CategoryId
+
+
+                                      where q.QuestionId.Equals(i)
+                                      select new AnsweredQuestionInformation()
+                                      {
+                                          Username = u.UserName,
+                                          Question = q.Question,
+                                          QuesId = q.QuestionId,
+                                          Image = u.Image,
+                                          QuesPostedDate = q.PostedDate,
+                                          Category = c.CategoryName
+
+                                      };
+
+            foreach (var item in anweredQuestionInfo)
+            {
+                
+                <tr>
+                    <td>
+                        
+                        <a href="@Url.Action("PostAnswer","Home", new { id = item.QuesId })"   class="ansQuesLink"><span style="color: green">
+                                                                                            
+                            <img src="~/Png/help-icon.png" width="25"/>                                                    
+                                                                                            
+                            @Html.DisplayFor(m => item.Question)  
+                                                                                        </span> </a>
+                          
+                         
+                        <br/>
+                      <span style="color: darkgray">By</span>  @Html.DisplayFor(m => item.Username) <span style="color: darkgray">&nbsp; Date</span> @Html.DisplayFor(m => item.QuesPostedDate)
+                 <span style="color: darkgray">&nbsp; Reply</span>   @countAnswerForEachId 
+                    </td>
+
+                </tr>
+             
+          
+               
+             
+
+            }
+
+
+
+
+        }
+            </tbody>   
+    </table></div>
+}
+
+<script>
+    $("#answeredQuestionKendoGrid").kendoGrid({
+
+
+        pageable: {
+            refresh: true,
+            pageSizes: true,
+            buttonCount: 5
+        }
+
+           , dataSource: { pageSize: 5 }
+
+           ,
+
+        scrollable: false
+           ,
+        sortable: true,
+        filterable: true,
+        columnMenu: false,
+        serverPaging: true,
+        type: "odata"
+    });
+    $(".ansQuesLink").css('background', 'none');
+</script>

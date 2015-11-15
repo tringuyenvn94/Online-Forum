@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "_Edit";
+}
+
+@model ForumDisscussion.Models.EditViwModel
+<style>
+     
+</style>
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.8.20.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@using (Html.BeginForm("Edit","Home",FormMethod.Post)) {
+    @Html.ValidationSummary(true)
+
+     <fieldset>
+        <legend>EditViwModel</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Reply)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Reply,new {@class="g"})
+            @Html.ValidationMessageFor(model => model.Reply)
+        </div>
+        <br/>
+        <p>
+            <input type="submit" value="Edit" />
+        </p>
+    </fieldset>
+}
+
+
+@using (Html.BeginForm("CancelSignUp", "LoginSignUp", FormMethod.Post))
+{
+    <input type="submit" class="m btn" value="Cancel"  id="cancelSignup" style="position: absolute;left:34%;top:79% ;text-align: center;" />
+}

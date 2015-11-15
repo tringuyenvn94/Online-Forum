@@ -1,0 +1,24 @@
+﻿@using ForumDisscussion.Models
+@{
+    ViewBag.Title = "GetComments";
+}
+
+
+@foreach(var m in (IQueryable<AnsPostedUser>)ViewData["Query"])
+    {
+        <span><img src="data:image/jpg;base64,@Convert.ToBase64String(m.Image)" width="70px" height="40"/></span> <span id="homQues">@Html.DisplayFor(n=>m.Answer)</span>
+    <br/><div style="position: relative;text-align: center"><span id="vId">by </span> <span>@Html.DisplayFor(n=>m.Username)</span><span id="vId"> posted date </span> <span>@Html.DisplayFor(n=>m.PostedDate)</span> </div>
+    }
+<br/>
+<div>
+    <span style="color: forestgreen;font-weight: bold"> @ViewBag.totalComments</span>  <span id="vId"> Comments</span>
+</div>
+<br/>
+@foreach (var c in (IEnumerable<UserComment>)ViewData["Comments"])
+{
+    <span><img src="data:image/jpg;base64,@Convert.ToBase64String(c.Image)" width="70px" height="40"/></span><span id="homAns">@Html.DisplayFor(m=>c.CommentMsg)</span>
+    <div style="text-align: center"><span id="vId">by </span><span >@Html.DisplayFor(m=>c.Username)</span><span id="vId"> date </span><span> @Html.DisplayFor(m=>c.PostedDate)</span></div>
+    <br/>
+    <br/>
+}
+

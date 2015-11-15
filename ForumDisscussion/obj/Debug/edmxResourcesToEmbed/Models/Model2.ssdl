@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ForumDbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ForumDbModelStoreContainer">
+    <EntitySet Name="TemporaryTable" EntityType="ForumDbModel.Store.TemporaryTable" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserPostedQuestion" EntityType="ForumDbModel.Store.UserPostedQuestion" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="TemporaryTable">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="TempId" Type="int" />
+  </EntityType>
+  <EntityType Name="UserPostedQuestion">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Question" Type="varchar" MaxLength="800" />
+    <Property Name="UserId" Type="int" />
+    <Property Name="AnsUserId" Type="nchar" MaxLength="10" />
+    <Property Name="Answer" Type="varchar" MaxLength="700" />
+    <Property Name="ReplyUser" Type="varchar" MaxLength="50" />
+    <Property Name="PostedDate" Type="datetime" />
+    <Property Name="Image" Type="image" />
+    <Property Name="QuesPostDate" Type="datetime" />
+    <Property Name="Category" Type="varchar" MaxLength="50" />
+    <Property Name="QuestionId" Type="int" />
+    <Property Name="TotalReplies" Type="int" />
+    <Property Name="TotalAnswer" Type="int" />
+  </EntityType>
+</Schema>

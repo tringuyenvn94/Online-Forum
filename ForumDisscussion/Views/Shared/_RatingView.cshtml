@@ -1,0 +1,192 @@
+﻿
+
+@model ForumDisscussion.Models.RatingViewModel
+
+
+<span class="Clear">
+   @if (Convert.ToInt32(ViewData["raiting"]) == 0)
+    {
+        <input class="star required" type="radio" name="test-1-rating-5" value="1" title="Answer is Very Poor" />
+        <input class="star" type="radio" name="test-1-rating-5" value="2" title="Answer is  Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="3" title="Answer is  Good"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="4" title="Answer is Very Good" />
+        <input class="star" type="radio" name="test-1-rating-5" value="5" title="Answer is Best" />
+ 
+       
+    }
+    @if (Convert.ToInt32(ViewData["raiting"]) == 1)
+    {
+        <input class="star required" type="radio" name="test-1-rating-5" value="1" title="Answer is Very Poor" checked="checked"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="2" title="Answer is  Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="3" title="Answer is  Good"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="4" title="Answer is Very Good" />
+        <input class="star" type="radio" name="test-1-rating-5" value="5" title="Answer is Best" />
+ 
+       
+    }
+    @if (Convert.ToInt32(ViewData["raiting"]) == 2)
+    {
+        <input class="star required" type="radio" name="test-1-rating-5" value="1" title="Answer is Very Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="2" title="Answer is  Poor" checked="checked" id="r2"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="3" title="Answer is  Good"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="4" title="Answer is Very Good" />
+        <input class="star" type="radio" name="test-1-rating-5" value="5" title="Answer is Best" />
+    }
+    @if (Convert.ToInt32(ViewData["raiting"]) == 3)
+    {
+        <input class="star required" type="radio" name="test-1-rating-5" value="1" title="Answer is Very Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="2" title="Answer is  Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="3" title="Answer is  Good" checked="checked"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="4" title="Answer is Very Good" />
+        <input class="star" type="radio" name="test-1-rating-5" value="5" title="Answer is Best" />
+    }
+    @if (Convert.ToInt32(ViewData["raiting"]) == 4)
+    {
+      
+        <input class="star required" type="radio" name="test-1-rating-5" value="1" title="Answer is Very Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="2" title="Answer is  Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="3" title="Answer is  Good"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="4" title="Answer is Very Good" checked="checked"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="5" title="Answer is Best" />
+    
+     
+     
+    }
+    @if (Convert.ToInt32(ViewData["raiting"]) == 5)
+    {
+        <input class="star required" type="radio" name="test-1-rating-5" value="1" title="Answer is Very Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="2" title="Answer is  Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="3" title="Answer is  Good"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="4" title="Answer is Very Good" />
+        <input class="star" type="radio" name="test-1-rating-5" value="5" title="Answer is Best" checked="checked"/>
+    
+    }
+
+</span>
+
+<span>
+    
+    @if (ViewData["raiting"] == null)
+    {
+        <span style="color: darkgray"> &nbsp; (no votes)</span>
+    }
+    else
+    {
+        <span>&nbsp;  @ViewData["raiting"] (@ViewBag.totalRater votes)</span>  
+    } 
+</span>
+
+
+@{
+   if (!Request.IsAuthenticated)
+    {
+    <input type="text" value="1" id="AuthWarningId" style="display: none"/>
+    }
+   else
+  
+    {
+        if (ViewBag.currentUserRatingNotAllowed == 2)
+        {
+            <input type="text" value="2" id="AuthWarningId" style="display: none"/>
+        }
+    }
+  
+}
+
+<span id="msg"></span>
+<input type="hidden" value="@ViewBag.ansId" name="ansId" id="ansTextBoxId"/>
+<span id="hover-test" style="margin:0 0 0 20px;"></span>
+
+@Html.TextBox("score",null,new{id="scoreTextBoxId"})
+
+<div id="errorNotification"></div>
+<div id="successNotification"></div>
+<script>
+    
+    function showNotification(text) {
+        $("#errorNotification").html('<h2>' + text + '</h2>').fadeIn().delay(3000).fadeOut();
+    }
+    function showSuccessNotification(text) {
+        $("#successNotification").html('<h2>' + text + '</h2>').fadeIn().delay(3000).fadeOut();
+    }
+   
+   
+    $('form :radio.star').rating({
+        callback: function (value, link) {
+
+
+
+            $("#scoreTextBoxId").val(value);
+            var dataObject = {
+                ansId: $("#ansTextBoxId").val(),
+                score: $("#scoreTextBoxId").val()
+           
+            };
+
+            $.ajax({
+                url: "@Url.Action("RatePost","Home")",
+                type: "POST",
+                data: dataObject,
+                dataType: "json",
+                success: function (data) {
+                  
+                    
+                    if (data.result == "Please Login to rate") {
+
+                        showNotification("<img src='/Png/error-icon.png' /> Please Login to rate");
+
+                        setTimeout(function () {
+                            window.location.href = "/Home/PostComment/" + $("#ansTextBoxId").val();
+                        }, 4000);
+                       
+                    
+                    }
+                    if (data.result == "You cann't rate as this was posted by you.") {
+                        showNotification("<img src='/Png/error-icon.png' /> You cann't rate as this was posted by you");
+                        setTimeout(function () {
+                            window.location.href = "/Home/PostComment/" + $("#ansTextBoxId").val();
+                        }, 4000);
+                    }
+                    if (data.result == "You already rated this answer.") {
+                        showNotification("<img src='/Png/error-icon.png' /> You already rated this answer ");
+                        setTimeout(function () {
+                            window.location.href = "/Home/PostComment/" + $("#ansTextBoxId").val();
+                        }, 4000);
+                    }
+
+                    if (data.result == "Successfully rated.") {
+                     
+                        showSuccessNotification("<img src='/Png/success-icon.png' /> Successfully Rated "+value+" out of 5 .");
+
+                        setTimeout(function () {
+                            window.location.href = "/Home/PostComment/" + $("#ansTextBoxId").val();
+                        }, 4000);
+
+
+                    }
+                   
+                },
+                error: function () {
+
+                    alert("error");
+                    setTimeout(function () {
+                        window.location.href = "/Home/PostComment/" + $("#ansTextBoxId").val();
+                    }, 2000);
+                }
+            });
+
+
+        },
+
+        focus: function(value, link){
+        
+            var tip = $('#hover-test');
+            tip[0].data = tip[0].data || tip.html();
+            tip.html(link.title || 'value: '+value);
+        },
+    blur: function(value, link){
+        var tip = $('#hover-test');
+        $('#hover-test').html(tip[0].data || '');
+    }
+    });
+</script>

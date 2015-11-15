@@ -1,0 +1,140 @@
+﻿
+@model IEnumerable<ForumDisscussion.Models.UnAnsweredQuesListModel>
+
+@{
+    ViewBag.Title = "UnAnsweredQuestions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<style>
+    
+</style>
+<script src="~/KendoUI/jquery.min.js"></script>
+<script src="~/KendoUI/kendo.all.min.js"></script>
+
+
+
+@using (Html.BeginForm("UnAnsweredQuestions", "ForumQuestionAns", FormMethod.Post))
+{<label>Search UnAnswered Questions</label>
+    <div class="typeahead-container">
+
+           
+                <input id="txtSearch"
+                       name="searchTerm"
+                       type="search" width="200"
+                    />
+          
+     
+                <button type="submit" class="btn btn-info butClass" style="background: white;color: white;width: 80px;height: 39px">
+                    <i class="search-icon"></i>
+                </button>
+        
+       
+    </div>
+}
+<br />
+<span style="font-family: Courier New;color: red">@ViewBag.reqErrorMsg</span><br /><br />
+<h1 style="font-family: Verenda">UnAnswered Questions </h1><br />
+
+
+
+<table id="unAnsQuesKendoGrid">
+    
+    <colgroup>
+        <col style="width:70%" />
+        <col style="width:18%" />
+        <col style="width:12%" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Question</th>
+            <th>Category</th>
+            <th>Views</th>
+        </tr>
+    </thead>
+    <tbody>
+       
+
+
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                     
+                    <img src="~/Png/help-icon.png" width="30" />
+                    <a href="@Url.Action("PostAnswer", "ForumQuestionAns", new { area="ForumUser",id = item.Id })" class="quesLink">
+                        <span id="qurl">  @Html.DisplayFor(modelItem => item.Question)</span></a>
+                        <br />
+                        By<span id="homAns">     @Html.DisplayFor(modelItem => item.Username)</span>,date <span id="homAns">       @Html.DisplayFor(modelItem => item.PostedDate)</span><img class="img-circle" src="data:image/jpg;base64,@Convert.ToBase64String(item.Image)" width="70px" height="40" />
+
+
+
+</td>
+                <td id="vInt">@Html.DisplayFor(modelItem => item.Category)</td>
+                <td>@Html.DisplayFor(modelItem => item.Views)</td>
+            </tr>
+           
+        }
+
+
+    </tbody>
+</table>
+
+
+
+<script>
+  
+
+    $("#txtSearch").kendoAutoComplete({
+            minLength: 2,
+
+
+
+            placeholder: 'Search By Category',
+            dataSource: {
+                type: "JSON",
+
+                transport: {
+                    read: "/ForumQuestionAns/DisplayCat"
+
+                },
+            }
+
+        });
+
+
+</script>
+
+<script>
+    $(".quesLink").css('background', 'none');
+    
+    $("#unAnsQuesKendoGrid").kendoGrid({
+       
+
+        pageable: {
+            refresh: true,
+            pageSizes: true,
+            buttonCount: 5
+        }
+
+        , dataSource: { pageSize: 5 }
+
+        ,
+
+        scrollable: false
+        ,
+        sortable: true,
+        filterable: false,
+        columnMenu: false,
+        serverPaging: true,
+        type: "odata"
+    });
+
+  
+   
+
+</script>

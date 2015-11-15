@@ -1,0 +1,94 @@
+﻿@using ForumDisscussion.Models
+
+@{
+    ViewBag.Title = "GetAllUnAnsweredQuestion";
+}
+
+<script src="~/KendoUI/jquery.min.js"></script>
+<script src="~/KendoUI/kendo.all.min.js"></script>
+<h2>Unanswered Question List</h2>
+@{
+    
+    
+    var db = new ForumDataBaseConnectionContext();
+
+
+    var v = from q in db.Questions
+            join a in db.Answers on q.QuestionId equals a.QuestionId into ans
+            from ac in ans.DefaultIfEmpty()
+            join u in db.ForumUser on q.UserId equals u.UserId into usr
+            from uc in usr.DefaultIfEmpty()
+            join c in db.Category on q.CategoryId equals c.CategoryId
+            where ac.Answer==null
+            select new AnsPostedUser{ Question = q.Question, Category = c.CategoryName, Answer = ac.Answer, Username = uc.UserName, QuesPostedDate = q.PostedDate, QuesId = q.QuestionId };
+
+
+    <div>
+    <table id="answeredQuestionKendoGrid">
+        <thead>
+            <tr><th>Answered Questions</th></tr>
+        </thead><tbody>
+    
+          
+
+            @foreach (var item in v)
+            {
+                
+                <tr>
+                    <td>
+                      
+                            <a href="@Url.Action("PostAnswer","Home", new { id = item.QuesId })" class="ansQuesLink"><span style="color: green">
+                                                                                            
+                                                                                                <img src="~/Png/help-icon.png" width="25"/>                                                    
+                                                                                            
+                                                                                                @Html.DisplayFor(m => item.Question)  
+                                                                                            </span> </a>
+
+
+                            <br/>
+                            <span style="color: darkgray">By</span>
+                            @Html.DisplayFor(m => item.Username)
+                            <span style="color: darkgray">&nbsp; Date</span>
+                            @Html.DisplayFor(m => item.QuesPostedDate)
+                    
+                    </td>
+
+                </tr>
+             
+          
+               
+             
+
+            }
+
+
+
+
+            </tbody>   
+    </table></div>
+}
+
+<script>
+    $("#answeredQuestionKendoGrid").kendoGrid({
+
+
+        pageable: {
+            refresh: true,
+            pageSizes: true,
+            buttonCount: 5
+        }
+
+           , dataSource: { pageSize: 5 }
+
+           ,
+
+        scrollable: false
+           ,
+        sortable: true,
+        filterable: true,
+        columnMenu: false,
+        serverPaging: true,
+        type: "odata"
+    });
+    $(".ansQuesLink").css('background', 'none');
+</script>

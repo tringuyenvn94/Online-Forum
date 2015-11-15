@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ForumDbModels.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ForumDbModelsStoreContainer">
+    <EntitySet Name="View_AnsweredQuestion" EntityType="ForumDbModels.Store.View_AnsweredQuestion" store:Type="Views" store:Schema="dbo" store:Name="View_AnsweredQuestion">
+      <DefiningQuery>SELECT 
+      [View_AnsweredQuestion].[QquestID] AS [QquestID], 
+      [View_AnsweredQuestion].[Question] AS [Question], 
+      [View_AnsweredQuestion].[QcatID] AS [QcatID], 
+      [View_AnsweredQuestion].[CategoryName] AS [CategoryName], 
+      [View_AnsweredQuestion].[QuserID] AS [QuserID], 
+      [View_AnsweredQuestion].[PostedDate] AS [PostedDate], 
+      [View_AnsweredQuestion].[views] AS [views], 
+      [View_AnsweredQuestion].[Replies] AS [Replies], 
+      [View_AnsweredQuestion].[UuserID] AS [UuserID], 
+      [View_AnsweredQuestion].[UserName] AS [UserName]
+      FROM [dbo].[View_AnsweredQuestion] AS [View_AnsweredQuestion]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+  <!--Errors Found During Generation:
+      warning 6002: The table/view 'ForumDb.dbo.View_AnsweredQuestion' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+  <EntityType Name="View_AnsweredQuestion">
+    <Key>
+      <PropertyRef Name="QquestID" />
+      <PropertyRef Name="Question" />
+      <PropertyRef Name="QcatID" />
+      <PropertyRef Name="CategoryName" />
+      <PropertyRef Name="QuserID" />
+      <PropertyRef Name="PostedDate" />
+      <PropertyRef Name="views" />
+      <PropertyRef Name="Replies" />
+      <PropertyRef Name="UuserID" />
+      <PropertyRef Name="UserName" />
+    </Key>
+    <Property Name="QquestID" Type="int" Nullable="false" />
+    <Property Name="Question" Type="varchar" Nullable="false" MaxLength="350" />
+    <Property Name="QcatID" Type="int" Nullable="false" />
+    <Property Name="CategoryName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="QuserID" Type="int" Nullable="false" />
+    <Property Name="PostedDate" Type="date" Nullable="false" />
+    <Property Name="views" Type="int" Nullable="false" />
+    <Property Name="Replies" Type="int" Nullable="false" />
+    <Property Name="UuserID" Type="int" Nullable="false" />
+    <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="30" />
+  </EntityType>
+</Schema>

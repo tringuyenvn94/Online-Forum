@@ -1,0 +1,114 @@
+﻿
+@using ForumDisscussion.Models
+@model UsersAnsPost
+
+@{
+    ViewBag.Title = "PostAnswer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<style>.ui-dialog-titlebar{background: #6E8B3D;}</style>
+
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+
+<div id="d" style="display: none">
+    <img src="~/Png/exclamation_circle.png" width="34px" style="font-family: Arial;font-size: 19px;"/>
+    
+    <span id="unauthDialog"> It seems you are not <strong>logged in</strong>. You must have to <strong><u>@Html.ActionLink("Login","Login","Account",new{area=""},null)</u></strong> to <strong>Post Comment</strong>.Would you like to login now?</span>
+
+   
+ 
+</div>
+
+@foreach (var i in (IEnumerable<AnsPostedUser>)ViewData["GetQuestionAndImageByID"])
+{
+    
+    	<div style="margin:0px;">
+			
+			<table style="width:100%; border-collapse:separate; border:1px solid #aaa;" class="sc_rc">
+				<tbody><tr>
+					<td style="width:100px; padding:5px; border-right:1px solid #aaa;background-image: -webkit-linear-gradient(top,#e3e3e3,#efefef);background-image: linear-gradient(to bottom, #E3E3E3, #EFEFEF); border-bottom-left-radius: 5px; border-top-left-radius: 5px;" valign="top">
+				<span><img src="data:image/jpg;base64,@Convert.ToBase64String(i.Image)" width="70px" height="40"/></span>
+     
+					    <div>
+					 <span id="homPostUsr">@Html.DisplayFor(n => i.Username)</span>
+
+					    </div>
+					    <div>
+					        <span id="homPostUsr">@Html.DisplayFor(n => i.PostedDate)</span>
+					    </div>
+					    
+                        <div></div>
+					
+					</td>
+					<td style="padding:5px; background:#fff; border-bottom-right-radius: 5px; border-top-right-radius: 5px;text-align: left" valign="top">
+						<img src="~/Png/help-icon.png" width="35"/> <span id="homQues">@Html.DisplayFor(m => i.Question)</span> 	
+					</td>
+				</tr>
+			</tbody></table>
+		</div>
+    
+    
+     <span> </span>
+    
+    
+
+}
+<br/><br/>
+
+@using (Html.BeginForm("PostAnswer", "ForumQuestionAns", FormMethod.Post))
+{
+
+    if (ViewData["PostedAnsAndUserInformation"]!= null)
+    {
+        foreach (var i in (IEnumerable<AnsPostedUser>)ViewData["PostedAnsAndUserInformation"])
+       {
+           <label>
+               <img src="~/Png/mail_post.png" width="36px" />  answer
+
+           </label>
+    <div style="background: #FFF8DC;width: 80%;">
+  <span> <span> <img src="data:image/jpg;base64,@Convert.ToBase64String(i.Image)" width="70px" height="40"/></span> 
+   </span>
+    
+            <span  id="homAns">@Html.DisplayFor(m => i.Answer)</span><br/>
+  <div style="text-align: center"> <span id="vId" >@Html.DisplayFor(m => i.Username)</span> <span id="vId">@Html.DisplayFor(m => i.PostedDate)</span></div> 
+        </div>
+       }
+    }
+
+  
+   
+    
+  
+    <div id="Ans">
+        <img src="~/Png/mail_post.png" width="45" id="ansPng"/>
+    <img src="@ViewBag.icon"/>
+        @ViewBag.displayPostedAns
+    </div>
+    
+       <span class="editor-label">
+  
+                          <label>          <img src="~/Images/ic_post_plus.png" width="60"/>Post Your Answer</label>
+                      </span><br/>
+                      <span class="editor-field">
+   
+                         @Html.TextArea("msg", new { id = "msgBox", @class = "ansBox" })
+                              <div id="commErrorMsg" style=@((ViewData["ReqMsg"] != null && Convert.ToInt32(ViewData["ReqMsg"]) == 3) ? "display:block" : "display:none")>@ViewData["Mess"]</div>
+                      </span>
+                      <br/>
+                     <br/>
+                      <input type="submit" value="Post" id="mesPostButton" class="btn btn-primary"/><span>@Html.ActionLink("Back", "UnAnsweredQuestions", "ForumQuestionAns", new { @class = "btn btn-info" })</span>
+                              
+}
+
+
+
+
+<input type="text" id="gm" value="@ViewData["c"]" style="display:none"/>
+
+
+
+

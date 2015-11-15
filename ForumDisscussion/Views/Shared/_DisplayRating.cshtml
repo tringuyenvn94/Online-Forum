@@ -1,0 +1,72 @@
+﻿
+<span class="Clear">
+  
+    @if (ViewBag.avgRat== 1)
+    {
+        <input class="star required" type="radio" name="test-1-rating-5" value="1" title="Answer is Very Poor" checked="checked"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="2" title="Answer is  Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="3" title="Answer is  Good"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="4" title="Answer is Very Good" />
+        <input class="star" type="radio" name="test-1-rating-5" value="5" title="Answer is Best" />
+ 
+       
+    }
+    @if (ViewBag.avgRat == 2)
+    {
+        <input class="star required" type="radio" name="test-1-rating-5" value="1" title="Answer is Very Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="2" title="Answer is  Poor" checked="checked" id="r2"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="3" title="Answer is  Good"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="4" title="Answer is Very Good" />
+        <input class="star" type="radio" name="test-1-rating-5" value="5" title="Answer is Best" />
+    }
+    @if (ViewBag.avgRat == 3)
+    {
+        <input class="star required" type="radio" name="test-1-rating-5" value="1" title="Answer is Very Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="2" title="Answer is  Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="3" title="Answer is  Good" checked="checked"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="4" title="Answer is Very Good" />
+        <input class="star" type="radio" name="test-1-rating-5" value="5" title="Answer is Best" />
+    }
+    @if (ViewBag.avgRat == 4)
+    {
+      
+        <input class="star required" type="radio" name="test-1-rating-5" value="1" title="Answer is Very Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="2" title="Answer is  Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="3" title="Answer is  Good"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="4" title="Answer is Very Good" checked="checked"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="5" title="Answer is Best" />
+    
+     
+     
+    }
+    @if (ViewBag.avgRat == 5)
+    {
+        <input class="star required" type="radio" name="test-1-rating-5" value="1" title="Answer is Very Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="2" title="Answer is  Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="3" title="Answer is  Good"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="4" title="Answer is Very Good" />
+        <input class="star" type="radio" name="test-1-rating-5" value="5" title="Answer is Best" checked="checked"/>
+    
+    }
+
+    @if (ViewBag.avgRat != 1 && ViewBag.avgRat != 2 && ViewBag.avgRat != 3 && ViewBag.avgRat != 4 && ViewBag.avgRat != 5)
+    {
+        
+        <input class="star required" type="radio" name="test-1-rating-5" value="1" title="Answer is Very Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="2" title="Answer is  Poor"/>
+        <input class="star" type="radio" name="test-1-rating-5" value="3" title="Answer is  Good"/>
+       
+        <input class="star" type="radio" name="test-1-rating-5" value="4" title="Answer is Very Good" />
+        <input class="star" type="radio" name="test-1-rating-5" value="5" title="Answer is Best"/>
+    
+    }
+      
+</span>
+<link href="~/Rating/jquery.rating.css" rel="stylesheet" />
+<script src="~/Rating/jquery.js"></script>
+<script src="~/Rating/jquery.MetaData.js"></script>
+<script src="~/Rating/jquery.rating.js"></script>
+
+<script>
+    $('radio.star').rating('readOnly', true);    
+</script>

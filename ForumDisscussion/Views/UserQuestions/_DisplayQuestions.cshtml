@@ -1,0 +1,52 @@
+﻿@using ForumDisscussion.Models
+
+<h2>PostQuestion</h2>
+
+<table id="k">
+    <tr>
+        <th data-sortable="false" data-menuable="false" data-filterable="false">
+            Question
+        </th>
+        <th data-sortable="false" data-menuable="false" data-filterable="false">
+            Category
+        </th>
+        <th data-sortable="false" data-menuable="false" data-filterable="false">
+            Views
+        </th>
+        <th data-sortable="false" data-menuable="false" data-filterable="false">
+            Replies
+        </th>
+    </tr>
+
+    @foreach (var item in (IEnumerable<QuestionList>)ViewData["QuestionLists"])
+    {
+        <tr>
+            <td>
+                <div id="homQues">
+                    <img src="~/Png/question_balloon(1).png" width="35" />
+                    <a href="@Url.Action("PostAnswer", "Home", new { id = item.Id })" class="quesLink">
+                        <span id="c" style="color:green;">@Html.DisplayFor(m => item.Question)</span>
+
+
+                    </a>
+                </div>
+
+                <div>
+                    <b> Posted by </b>   <span id="homPostUsr">   @Html.DisplayFor(m => item.PostedBy)</span>,  <b>Posted date</b>  <span id="homPostUsr">  @Html.DisplayFor(modelItem => item.Posteddate)</span>&nbsp; <img src="data:image/jpg;base64,@Convert.ToBase64String(item.Image)" width="40" height="" class="img-circle" />
+
+                </div>
+            </td>
+            <td>
+                <span style="color:blue"> @Html.DisplayFor(m => item.Category)</span>
+
+            </td>
+            <td>
+                @Html.DisplayFor(m => item.Views)
+            </td>
+            <td>
+                @Html.DisplayFor(m => item.Answers)
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,17 @@
+﻿
+@model ForumDisscussion.Models.UsersAnsPost
+<link href="~/Al.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@using (Html.BeginForm())
+{
+    <div>
+          @Html.TextArea("msg",new{id="msgBox"})
+                @*@Html.ValidationMessageFor(model => model.Answer)*@
+    </div> 
+    <div>
+        <input type="submit" value="POST"/>
+    </div>
+}

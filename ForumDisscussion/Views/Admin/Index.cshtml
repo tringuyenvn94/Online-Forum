@@ -1,0 +1,263 @@
+﻿@using ForumDisscussion.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    
+  #adHomUserDetailsTab{background:#fff}
+  
+</style>
+
+<h2>Admin Home Page</h2>
+
+<link href="~/Content/jquery-ui-1.9.2.custom.css" rel="stylesheet" />
+<link href="~/CSS/gh-buttons.css" rel="stylesheet" />
+<link href="~/KendoUI/kendo.bootstrap.min.css" rel="stylesheet" />
+<link href="~/KendoUI/kendo.default.min.css" rel="stylesheet" />
+<link href="~/Content/Menu/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+ <script src="~/Content/Menu/bootstrap-transition.js"></script>
+ <script src="~/Content/Menu/bootstrap-dropdown.js"></script>
+<script src="~/Content/Menu/bootstrap-tab.js"></script>
+
+
+<script src="~/KendoUI/kendo.all.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.8.20.js"></script>
+
+<div class="bs-docs-example">
+    <ul id="myTab" class="nav nav-tabs">
+        <li class="active"><a href="#home" data-toggle="tab">
+              
+                               Users
+                       
+
+                           </a></li>
+                
+        <li >
+            
+        @Html.ActionLink("Add New Category","AddNewCategory","Admin")
+
+
+        </li>
+                
+    
+    
+    </ul>
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="home">
+     
+                      
+                     
+            <table id="adHomUserDetailsTab" class="table table-bordered">
+                <colgroup>
+                    <col style="width:55%" />
+                    <col style="width:15%" />
+                    <col style="width:10%" />
+                    <col style="width:10%" />
+                    <col />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th style="text-align: center" data-sortable="false" data-menuable="false" data-filterable="false">Image</th>
+                        <th style="text-align: center">Username</th>
+                        <th style="text-align: center" data-sortable="false" data-menuable="false" data-filterable="false">Firstname</th>
+                        <th style="text-align: center" data-sortable="false" data-menuable="false" data-filterable="false">Lastname</th>
+                        <th style="text-align: center">Country</th>
+                        <th style="text-align: center" data-sortable="false" data-menuable="false" data-filterable="false">Email</th>
+                        <th style="text-align: center" data-sortable="false" data-menuable="false" data-filterable="false">Question Post</th>
+                        <th style="text-align: center" data-sortable="false" data-menuable="false" data-filterable="false">Reply Post</th>
+                        <th style="text-align: center" data-sortable="false" data-menuable="false" data-filterable="false">Comment Post</th>
+                        <th style="text-align: center" data-sortable="false" data-menuable="false" data-filterable="false">Valid Post</th>
+                        <th style="text-align: center" data-sortable="false" data-menuable="false" data-filterable="false">Last Active</th>
+                        <th style="text-align: center" data-sortable="false" data-menuable="false" data-filterable="false">Actions</th>
+                    </tr></thead><tbody>
+                                     @foreach (var i in (IEnumerable<UsersDetailsViewModel>)ViewData["userDetails"])
+                                     {
+                                         <tr>
+                                             <td style="text-align: center"><img src="data:image/jpg;base64,@Convert.ToBase64String(i.UserImage)" width="40" height=""  class="img-circle" /></td>
+                                             <td style="text-align: center">
+                                                 @Html.DisplayFor(m=>i.Username)
+                                             </td>
+                                               
+                                             <td>
+                                                 @Html.DisplayFor(m=>i.Firstname)
+                                             </td>
+                                             <td style="text-align: center">
+                                                 @Html.DisplayFor(m=>i.Lastname)
+                                             </td>
+                                                   
+                                             <td style="text-align: center">
+                                                 @Html.DisplayFor(m=>i.Country)
+                                             </td>
+                                               
+                                             <td style="text-align: center">
+                                                 @Html.DisplayFor(m=>i.Email)
+                                             </td>
+                                             <td style="text-align: center">
+                                                 @Html.DisplayFor(m=>i.TotalQuestion)
+                                             </td>
+                                                   
+                                             <td style="text-align: center">
+                                                 @Html.DisplayFor(m=>i.TotalReply)
+                                             </td>
+                                               
+                                             <td style="text-align: center">
+                                                 @Html.DisplayFor(m=>i.TotalComment)
+                                             </td>
+                                             <td style="text-align: center">
+                                                 @Html.DisplayFor(m=>i.TotalValidPost)
+                                             </td>
+                                             <td style="text-align: center">
+                                                 @Html.DisplayFor(m=>i.LstActive)
+                                             </td>
+                                             <td style="text-align: center"> 
+                                                 
+                           
+               @Html.ActionLink( "Delete","Delete", new { id = i.Id }, new { @class = "lnkDelete button danger"  })
+               
+                                             </td>
+                                         </tr>
+                                     }
+                                 </tbody>
+            </table>      
+                  
+
+
+      
+          
+              
+        </div>
+    
+        <div class="tab-pane fade in active" id="answer">
+        
+        </div>
+        <div class="tab-pane fade" id="profile">
+            <p>
+                            
+             
+
+         
+              
+             
+            </p>
+               
+                
+            <div class="tab-pane fade" id="dropdown2">
+                <p>
+                    <script>
+                        $(".link").click(function () {
+                            JavascriptFunction();
+
+                        });
+                    </script>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="dialog-alert" style="display: none">
+<p>
+@TempData["msg"]!
+</p>
+</div>
+ 
+<div id="dialog-confirm" style="display: none">
+<p style="font-family: Arial;font-size: 19px">
+<span  style="float: left; margin: 0 7px 20px 0;"></span>
+    <img src="~/Png/alert.png" width="40"/>
+   
+    <span style="font-family: Courier New">
+        Are you sure to delete this user <b>parmanently</b>?If  there is any record that is related to this user will also be deleted <b>parmanently</b>.
+
+    </span>
+   
+
+</p>
+</div>
+ 
+
+
+    
+<script>
+    $(document).ready(function () {
+        $(".hi").hide();
+        var url = "";
+
+        if ('@TempData["msg"]' != "") {
+            $("#dialog-alert").dialog('open');
+        }
+
+       // $(".lnkDelete").css('color', 'white');
+
+        $("#dialog-confirm").dialog({
+            autoOpen: false,
+            title: ' Delete Pannel',
+            resizable: false,
+            height: 250,
+            width: 590,
+            position: [370, 120],
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar-close").hide();
+
+            },
+            buttons: {
+                "OK": function () {
+                    $(this).dialog("close");
+                    window.location.href = url;
+                },
+                "Cancel": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+      
+
+        $(".lnkDelete").live("click", function (e) {
+            // e.preventDefault(); use this or return false
+
+            url = $(this).attr('href');
+            $("#dialog-confirm").dialog('open');
+
+            return false;
+        });
+
+   
+
+        $("#btnClose").live("click", function (e) {
+            $("#dialog-edit").dialog("close");
+            return false;
+        });
+    });
+</script>
+
+<script>
+    
+    $("#adHomUserDetailsTab").kendoGrid({
+
+
+        pageable: {
+            refresh: true,
+            pageSizes: true,
+            buttonCount: 5
+        }
+
+        , dataSource: { pageSize: 5 }
+
+        ,
+       
+        scrollable: false
+        ,
+        sortable: true,
+        filterable: true,
+        columnMenu: false,
+        serverPaging: true,
+        type: "odata"
+    });
+</script>

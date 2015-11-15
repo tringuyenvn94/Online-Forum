@@ -1,0 +1,116 @@
+﻿@model ForumDisscussion.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+<span id="loginForm">
+<h2>Use a local account to log in.</h2>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Log in Form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName)
+                @Html.ValidationMessageFor(m => m.UserName)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+                @Html.ValidationMessageFor(m => m.Password)
+            </li>
+            <li>
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+            </li>
+        </ol>
+    
+        <button type="submit" class="btn btn-success" id="loginButton">
+            <i class="icon-hand-right icon-white">
+                
+            </i> Log In
+        </button>
+        <span>
+                                                                                             Not Registered  
+        <i class="icon-question-sign ">
+                
+            </i>    
+           
+        
+             
+        <button type="button" class="btn btn-info" onclick="goRegisterPage()">
+            <i class="icon-user icon-white">
+                
+            </i> Register
+        </button>
+        </span>
+    </fieldset>
+ 
+}
+</span>
+<div  id="divLoginFailedMessage" style="visibility: hidden">
+    <img src="~/Png/cancel(1).png" width="30"/>
+   
+    Invalid Username and Password combination.If you have no account please <b> <a href="@Url.Action("SignUp","UserSignUp")" id="signupLink">Sign Up</a></b> first.
+</div>
+<input type="text" value="@ViewBag.LoginFailedMessageId" id="divLoginFailedId" style="display: none"/>
+
+
+<script src="~/KendoUI/jquery.min.js"></script>
+<script src="~/KendoUI/kendo.all.min.js"></script>
+
+<script>
+    $(".btn-info").click(function () {
+        JavascriptFunction();
+    });
+</script>
+
+<script>
+  
+    function goRegisterPage() {
+        loading();
+        window.location.href = "/UserSignUp/SignUp";
+      
+    }
+
+    $("#loginButton").click(function() {
+        if ($("#UserName").val() != "" && $("#Password").val() != "") {
+            loading();
+        }
+    });
+    $(function() {
+        $("#loginButton").css('color', 'white');
+        $(".btn").css('color', 'white');
+    });
+
+  
+    if ($("#divLoginFailedId").val() == 1) {
+        $("#divLoginFailedMessage").kendoWindow({
+            position: {
+                top: "50%",
+                left: "10%"
+            }, title: "Login Failed Dialog",height:80,width:400
+        });
+    }
+
+    $("#signupLink").css('text-decoration', 'underline');
+    $("#signupLink").hover(function() {
+        $("#signupLink").css('background', 'none');
+    });
+    $("#signupLink").click(function () {
+       
+      
+        loading();
+    });
+</script>

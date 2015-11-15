@@ -1,0 +1,91 @@
+﻿
+
+@using ForumDisscussion.Models
+@model ForumDisscussion.Models.ImageUpdateViewModel
+@{
+    ViewBag.Title = "Update Image";
+}
+<link href="~/jQxWidegets/jqx.base.css" rel="stylesheet" />
+<link href="~/CSS/gh-buttons.css" rel="stylesheet" />
+<script src="~/jQxWidegets/jquery-1.11.1.min.js"></script>
+<style>
+
+     #imgUpButton{width: 100px}
+</style>
+
+<h2>UpdateImage</h2>
+@section Scripts
+{
+   
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.imgareaselect.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.fancyupload.js")"></script>
+  
+    <script>
+        $(document).ready(function () {
+            initSelect();
+        });
+    </script>
+     
+
+}
+ <script src="~/KendoUI/jquery.min.js"></script>
+     <script src="~/KendoUI/kendo.all.min.js"></script>
+@using (Html.BeginForm("UpdateImage", "UserHomePage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    
+        
+       
+                   <img alt="Field for image cutting" width="100"  id="preview" src="@Url.Content("~/Content/empty.png")" />
+   
+    <table>
+        <tr>
+            <td>
+                Select New Image &nbsp;
+            </td>
+            <td>
+                @Html.FileFor(model => model.File) 
+            </td>
+           <td>&nbsp; @Html.ValidationMessageFor(model => model.File)</td>
+        </tr>
+ 
+        <tr>
+          
+            <td></td>
+            <td>
+            
+                <input type="submit" value="Save" class="btn" id="imgUpButton" />
+                @Html.ActionLink("Back", "UserAnsQuestionList", "UserHomePage", new { area = "" }, new { @class = "button icon arrowleft  backLink bakToHom" })
+             </td>
+        </tr>
+
+    </table>
+    
+ 
+          
+      
+ 
+  
+}
+
+<input type="text" value="@ViewBag.imgUpSuccessId" id="imgSuccessDiaId" style="display: none"/>
+
+<div id="successMessageReferenceDiv"> </div>
+
+
+
+<script>
+
+
+    function displaySuccessMessage(text) {
+        $("#successMessageReferenceDiv").html('<h4>' + text + '</h4>').fadeIn().delay(3000).fadeOut();
+
+    }
+    if ($("#imgSuccessDiaId").val() == 1) {
+
+        displaySuccessMessage(' <img src="/Png/1405880759_accepted_48.png" width="35" /> Thanks!. Your Image has been updated successfully.');
+    
+    }
+</script>

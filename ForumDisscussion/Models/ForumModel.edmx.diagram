@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b995efff6a6e4af1baf65a7ccf6d2391" Name="Diagram1">
+        <EntityTypeShape EntityType="Models.Category" Width="1.5" PointX="3.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.ForumUser" Width="1.5" PointX="1.375" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.Answer" Width="1.5" PointX="5" PointY="1.5" />
+        <EntityTypeShape EntityType="Models.Question" Width="1.5" PointX="3.125" PointY="1.125" />
+        <EntityTypeShape EntityType="Models.Comment" Width="1.5" PointX="1.375" PointY="3.875" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

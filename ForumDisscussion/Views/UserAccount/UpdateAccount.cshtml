@@ -1,0 +1,87 @@
+﻿@model ForumDisscussion.Models.ForumUserProfile
+
+@{
+    ViewBag.Title = "UpdateAccount";
+}
+
+@if (ViewBag.p == 5)
+{
+    <style>.ui-dialog-titlebar{background: #ff4444}</style>
+}
+@if (ViewBag.p == 1)
+{
+    <style>.ui-dialog-titlebar{background: #218868}</style>
+}
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+@*<script src="~/js/j.js"></script>*@
+<h2>UpdateAccount</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>ForumUserProfile</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Fname)
+        </div>
+        <div class="editor-field">
+            
+          
+            @Html.TextBox("Fname")
+            @Html.ValidationMessageFor(model => model.Fname)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Lname)
+        </div>
+        <div class="editor-field">
+             @Html.TextBox("Lname")
+            @Html.ValidationMessageFor(model => model.Lname)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EmailId)
+        </div>
+        <div class="editor-field">
+             @Html.TextBox("EmailId")
+            @Html.ValidationMessageFor(model => model.EmailId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OldPassword)
+        </div>
+        <div class="editor-field">
+           @Html.TextBox("OldPassword")
+            @Html.ValidationMessageFor(model => model.OldPassword)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NewPassword)
+        </div>
+        <div class="editor-field">
+           @Html.TextBox("NewPassword")
+            @Html.ValidationMessageFor(model => model.NewPassword)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ConfirmNewPassword)
+        </div>
+        <div class="editor-field">
+           @Html.TextBox("ConfirmNewPassword")
+            @Html.ValidationMessageFor(model => model.ConfirmNewPassword)
+        </div>
+        <br/>
+        <p>
+            <input type="submit" value="Update" class="btn btn-primary kk" />
+         @Html.ActionLink("Back to Profile", "UserAnsQuestionList", "UserHomePage", new { id = "link" }, new { @class = "btn btn-info" })
+  
+        </p>
+    </fieldset>
+}
+
+
+
+  

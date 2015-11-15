@@ -1,0 +1,171 @@
+﻿@model ForumDisscussion.Models.Category
+
+@{
+    ViewBag.Title = "AddNewCategory";
+
+}
+
+<style>
+  
+    th {
+        color:#fff;background:green;font-size:20px;font-family:Arial;
+    }
+</style>
+<link href="~/CSS/gh-buttons.css" rel="stylesheet" />
+@*<link href="~/jQxWidegets/jqx.base.css" rel="stylesheet" />
+<script src="~/jQxWidegets/jquery-1.10.2.min.js"></script>*@
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<h2> Category Information</h2>
+
+
+<table class="table table-bordered">
+
+    <thead>
+    <tr>
+        <th style="text-align:center">
+          Category Name
+        </th>
+        <th style="text-align:center">Actions</th>
+    </tr>
+</thead>
+    <tbody>
+@foreach (var item in (IEnumerable<ForumDisscussion.Models.CategoryViewModel>)ViewData["GetCategories"])
+{
+    <tr>
+        <td style="text-align:center">
+            @Html.DisplayFor(modelItem => item.CategoryName)
+        </td>
+        <td style="text-align:center">
+            @Html.ActionLink("Edit", "Update", new { id=item.CategoryId }, new { @class = " button icon edit "}) |
+
+            @Html.ActionLink("Delete", "DeleteCategory", new { id=item.CategoryId }, new { @class = "lnkDelete button danger icon remove"})
+            
+             
+        </td>
+    </tr>
+}
+</tbody>
+</table>
+<br />
+<br />
+<span id=" categoryAddedToottipid"  style="display:none;font-size:20px;font-family:Courier New;">@ViewBag.successMsg</span>
+
+  <h3><img src="~/Png/1405880856_add_48.png" width="35"/> @((ViewData["Operation"] != null && Convert.ToInt32(ViewData["Operation"]) > 0) ? "Edit" : "Add")  Category</h3>
+      
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+       
+          
+
+              <div>Category Name</div> 
+    <div>  @Html.TextBoxFor(model => model.CategoryName, new { @class="empty"})  @Html.ValidationMessageFor(model => model.CategoryName)
+               </div>
+                  <br />
+    
+    
+    
+                 
+    
+    <p>
+                <input type="submit" value="Add" name="Create" class="button icon add" 
+                    style=@((ViewData["Operation"] != null && Convert.ToInt32(ViewData["Operation"]) > 0) ? "display:none" : "display:block") />
+                <input type="submit" value="Update" name="Update" 
+                       style=@((ViewData["Operation"] != null && Convert.ToInt32(ViewData["Operation"]) > 0) ? "display:block" : "display:none") />
+            </p>
+       
+     
+  
+
+}
+
+
+  
+<div id="dialog-alert" style="display: none">
+<p>
+@TempData["msg"]!
+</p>
+</div>
+ 
+<div id="dialog-confirm" style="display: none">
+<p style="font-family: Arial;font-size: 19px">
+<span  style="float: left; margin: 0 7px 20px 0;"></span>
+
+   
+    <img src="~/Png/alert.png" width="30"/>
+     Are you sure to delete?
+</p>
+</div>
+ 
+<div id="dialog-edit" style="display: none">
+</div>
+<div id="dialog-detail" style="display: none">
+</div>
+
+
+
+
+<input type="hidden" value="@ViewBag.emptyId" id="emptyId"/>
+    
+<script>
+    
+    if ($("#emptyId").val()==1) {
+
+        $(".empty").attr("value","");
+    }
+    $(document).ready(function () {
+        $(".hi").hide();
+        var url = "";
+
+        if ('@TempData["msg"]' != "") {
+            $("#dialog-alert").dialog('open');
+        }
+
+       
+
+        $("#dialog-confirm").dialog({
+            autoOpen: false,
+            title: ' Delete Pannel',
+            resizable: false,
+            height: 210,
+            width: 350,
+            position: [370, 120],
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar-close").hide();
+
+            },
+            buttons: {
+                "OK": function () {
+                    $(this).dialog("close");
+                    window.location.href = url;
+                },
+                "Cancel": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+      
+
+        $(".lnkDelete").live("click", function (e) {
+            // e.preventDefault(); use this or return false
+
+            url = $(this).attr('href');
+            $("#dialog-confirm").dialog('open');
+
+            return false;
+        });
+
+       
+
+        $("#btnClose").live("click", function (e) {
+            $("#dialog-edit").dialog("close");
+            return false;
+        });
+    });
+
+</script>
+ 

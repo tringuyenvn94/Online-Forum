@@ -1,0 +1,500 @@
+﻿
+@using ForumDisscussion.Models
+ @model IEnumerable<ForumDisscussion.Models.ForumUser>
+@*@model ForumUser*@
+
+
+@{
+    ViewBag.Title = "UserAnsQuestionList";
+}
+
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+
+<script src="~/js/uq.js"></script>
+<div class="bs-docs-example">
+            <ul id="myTab" class="nav nav-tabs">
+                <li class="active">
+                    <a href="#home" data-toggle="tab">
+              
+                              Answered Question
+                          </a>
+                </li>
+              <li><a href="#unAnsQuestion" data-toggle="tab"> Unanswered Question</a></li>
+                
+                  <li><a href="#account" data-toggle="tab"> Account Information</a></li>
+                
+                 <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Update <b class="caret"></b></a>
+                     <ul class="dropdown-menu">
+                         
+                         <li>
+                            @Html.ActionLink("Update Image","UpdateImage")
+                         </li>
+                         <li>
+                           @Html.ActionLink("Change Password","UpdatePassword")
+                         </li>
+               
+                     </ul>
+              </li>
+              
+            </ul>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade in active" id="home">
+        <p>
+             
+
+            
+@{
+    ForumDataBaseConnectionContext _db = new ForumDataBaseConnectionContext();
+
+    var ansIdList = new List<int>();
+    var commentIdList = new List<int>();
+    var checkQuestionId = new List<int>();
+    
+    var authUserId = _db.ForumUser.Single(m => m.UserName.Equals(User.Identity.Name)).UserId;
+    ViewBag.updateId = authUserId;
+    var authUserName = _db.ForumUser.SingleOrDefault(m => m.UserId.Equals(authUserId)).UserName;
+    var authUserImag = _db.ForumUser.SingleOrDefault(m => m.UserId.Equals(authUserId)).Image;
+    var quesId = _db.Questions.Where(m => m.UserId.Equals(authUserId)).Select(m => m.QuestionId);
+
+    foreach (var i in quesId)
+    {
+
+
+
+        var ansId = _db.Answers.Where(m => m.QuestionId.Equals(i)).Select(m => m.AnswerId);
+        foreach (var i1 in ansId.Where(i1 => !ansIdList.Contains(i1)))
+        {
+            ansIdList.Add(i1);
+        }
+    }
+
+    foreach (var i1 in ansIdList)
+    {
+
+        ViewBag.comments = _db.Comment.Where(m => m.AnswerId.Equals(i1)).Select(m => m.CommentId).Count();
+
+        var commId = _db.Comment.Where(m => m.AnswerId.Equals(i1)).Select(m => m.CommentId);
+        foreach (var i in commId.Where(i => !commentIdList.Contains(i)))
+        {
+            commentIdList.Add(i);
+        }
+    }
+
+    foreach (var i in commentIdList)
+    {
+
+    }
+
+
+    foreach (var i in quesId)
+    {
+
+        if (i != 0)
+        {
+            foreach (var i1 in ansIdList)
+            {
+
+
+                ViewData["u"] = from q in _db.Questions
+                                join a in _db.Answers on q.QuestionId equals a.QuestionId
+                                join u in _db.ForumUser on a.UserId equals u.UserId
+                                join c in _db.Category on q.CategoryId equals c.CategoryId
+
+
+
+                                where q.QuestionId.Equals(i)
+                                where a.AnswerId.Equals(i1)
+                                select new AnsPostedUser() {AnsId = a.AnswerId, Username = u.UserName, PostedDate = a.AnsweredTimeDate, Question = q.Question, Answer = a.Answer, Image = u.Image, Category = c.CategoryName};
+                foreach (var i3 in (IEnumerable<AnsPostedUser>) ViewData["u"])
+                {
+
+                    ViewBag.comments = _db.Comment.Where(m => m.AnswerId.Equals(i1)).Select(m => m.CommentId).Count();
+
+
+                    if (!checkQuestionId.Contains(i))
+                    {
+                        checkQuestionId.Add(i);
+
+                        ViewBag.totAns = _db.Answers.Where(m => m.QuestionId.Equals(i)).Select(m => m.AnswerId).Count();
+                        var c = _db.Questions.SingleOrDefault(m => m.QuestionId.Equals(i));
+                        if (c != null)
+                        {
+                            ViewBag.qusPostDate = c.PostedDate;
+                        }
+
+
+                        <div style="margin: 0px;">
+			
+                            <table style="width: 100%; border-collapse: separate; border: 1px solid #aaa;" class="sc_rc">
+                                <tbody><tr>
+                                           <td style="width: 20%; padding: 5px; border-right: 1px solid #aaa; background-image: -webkit-linear-gradient(top, #e3e3e3, #efefef); background-image: linear-gradient(to bottom, #E3E3E3, #EFEFEF); border-bottom-left-radius: 5px; border-top-left-radius: 5px;" valign="top">
+                                               <span><img src="data:image/jpg;base64,@Convert.ToBase64String(authUserImag)" width="70px" height="60"/>
+                                               </span>
+     
+                                               <div>
+                                                   <span style="color: lightslategrey">By </span>@authUserName
+
+                                               </div>
+                                               <div>
+                                                   <span style="color: lightslategrey">Category </span> @Html.DisplayFor(m => i3.Category)<br/>
+                                                   <span style="color: lightslategrey">Post Date </span>@ViewBag.qusPostDate
+					   
+                                               </div>
+                                               <div></div>
+					
+                                           </td>
+                                           <td style="padding: 5px; background: #fff; border-bottom-right-radius: 5px; border-top-right-radius: 5px; text-align: left" valign="top">
+					   
+					 
+                                               <img src="~/Png/FAQ-icon.png" width="35px"/>
+
+                                               <span id="homQues">@Html.DisplayFor(m => i3.Question)</span>	
+                                           </td>
+                                       </tr>
+                                </tbody></table>
+                        </div>
+
+
+
+
+
+
+                        <img src="~/Png/chat_2(1).png" width="45"/>
+                        <span id="dti" style="font-size: 18px; color: chocolate"> <span >@ViewBag.totAns</span> @if (ViewBag.totAns > 1)
+                                                                                                                {
+                                                                                                                    <span>Replies</span>
+                                                                                                                }
+                              
+                            @if (ViewBag.totAns == 1)
+                            {
+                                <span>Reply</span>
+                            }
+
+                                
+                              
+                              
+                              
+                              
+                        </span>
+
+                        <br/>
+                        <div id="content_wrapper" class="content single">
+                           
+                            <div class="post">
+                   
+                                <span id="homQues">
+                
+                                    <img src="~/Png/1425571656_001_50.png" /> 
+                      
+                                              
+                                    <span >
+                                            
+                                        <a style="font-family: Arial; padding: 10px; background: white; width: auto; color: green" href="@Url.Action("PostComment", "UserHomePage", new {id = i3.AnsId})" class="quesLink">
+                        
+                                            @Html.DisplayFor(m => i3.Answer) 
+                                        </a>
+                                    </span>
+                    
+                
+                                </span>
+			  
+                                <p style="text-align: right"> <span style="font-weight: bold;"> <b> Posted by </b>    </span>
+                                    <span id="homPostUsr">   @Html.DisplayFor(m => i3.Username, new {id = "UsHomePagUsername"})</span>
+                                    <span style="font-weight: bold;">Posted date</span>
+                                    <span id="homPostUsr">   @Html.DisplayFor(m => i3.PostedDate)</span>
+                                    <img class="img-circle" src="data:image/jpg;base64,@Convert.ToBase64String(i3.Image)" width="70px" height="40"/>
+                                    <div>
+                                        <span style="color: fuchsia">@if (ViewBag.comments >= 1)
+                                                                     {
+                                                                         @ViewBag.comments
+                                                                     }</span> @if (ViewBag.comments > 1)
+                                                                              {
+                                                                                  <span style="color: darkgray">Comments</span>
+                                                                              }
+                                        @if (ViewBag.comments == 1)
+                                        {
+                                            <span style="color: darkgray">Comment</span>
+                                        }
+                                        @if (ViewBag.comments == 0)
+                                        {
+                                            <span style="color: darkgray">No Comment</span>
+                                        }      
+                                    </div>
+                                </p> 
+            
+                            </div>
+                        </div>
+
+
+
+
+
+
+                    }
+
+
+
+                    else
+                    {
+
+
+
+
+                        <div id="content_wrapper" class="content single">
+                           
+                            <div class="post">
+                   
+                                <span id="homQues">
+                
+                                    <img src="~/Png/1425571656_001_50.png" /> 
+                      
+                                              
+                                    <span >
+                                            
+                                        <a style="font-family: Arial; padding: 10px; background: white; width: auto; color: green" href="@Url.Action("PostComment", "UserHomePage", new {id = i3.AnsId})" class="quesLink">
+                        
+                                            @Html.DisplayFor(m => i3.Answer) 
+                                        </a>
+                                    </span>
+                    
+                
+                                </span>
+			  
+                                <p style="text-align: right"> <span style="font-weight: bold;"> <b> Posted by </b>    </span>
+                                    <span id="homPostUsr">   @Html.DisplayFor(m => i3.Username, new {id = "UsHomePagUsername"})</span>
+                                    <span style="font-weight: bold;">Posted date</span>
+                                    <span id="homPostUsr">   @Html.DisplayFor(m => i3.PostedDate)</span>
+                                    <img class="img-circle" src="data:image/jpg;base64,@Convert.ToBase64String(i3.Image)" width="70px" height="40"/>
+                                    <div>
+                                        <span style="color: fuchsia">@if (ViewBag.comments >= 1)
+                                                                     {
+                                                                         @ViewBag.comments
+                                                                     }</span> @if (ViewBag.comments > 1)
+                                                                              {
+                                                                                  <span style="color: darkgray">Comments</span>
+                                                                              }
+                                        @if (ViewBag.comments == 1)
+                                        {
+                                            <span style="color: darkgray">Comment</span>
+                                        }
+                                        @if (ViewBag.comments == 0)
+                                        {
+                                            <span style="color: darkgray">No Comment</span>
+                                        }  
+                                    </div>
+                                </p> 
+            
+                            </div>
+                        </div>
+
+                    }
+
+                }
+
+            }
+        }
+
+    }
+
+
+}
+             
+                  
+                  
+
+
+        </p>
+             
+              
+    </div>
+    <div class="tab-pane fade" id="unAnsQuestion">
+        <p>
+        @{
+          
+               foreach (int queId in quesId)
+    {
+        var v = from q in _db.Questions
+                join a in _db.Answers on q.QuestionId equals a.QuestionId into ans
+                from ac in ans.DefaultIfEmpty()
+                join u in _db.ForumUser on ac.UserId equals u.UserId into usr
+                from uc in usr.DefaultIfEmpty()
+                join c in _db.Category on q.CategoryId equals c.CategoryId
+                where q.QuestionId.Equals(queId)
+
+                select new AnsPostedUser() { Question = q.Question, Category = c.CategoryName, Answer = ac.Answer, Username = uc.UserName, QuesPostedDate = q.PostedDate, QuesId = q.QuestionId };
+
+
+        foreach (var ad in v.Where(ad => ad.Answer == null))
+        {
+            <div style="margin: 0px;">
+			
+                <table style="width: 100%; border-collapse: separate; border: 1px solid #aaa;" class="sc_rc">
+                    <tbody><tr>
+                               <td style="width: 20%; padding: 5px; border-right: 1px solid #aaa; background-image: -webkit-linear-gradient(top, #e3e3e3, #efefef); background-image: linear-gradient(to bottom, #E3E3E3, #EFEFEF); border-bottom-left-radius: 5px; border-top-left-radius: 5px;" valign="top">
+                                   <span><img src="data:image/jpg;base64,@Convert.ToBase64String(authUserImag)" width="70px" height="60"/>
+                                   </span>
+     
+                                   <div>
+					        
+                                       <span style="color: lightslategrey">By @authUserName</span>
+
+                                   </div>
+                                   <span><span style="color: lightslategrey">Category</span> <span>@Html.DisplayFor(m => ad.Category)</span>  <br/> 
+                                       <span style="color: lightslategrey">Post Date </span>@Html.DisplayFor(m => ad.QuesPostedDate)<br/></span>
+                                   <div></div>
+					
+                               </td>
+                               <td style="padding: 5px; background: #fff; border-bottom-right-radius: 5px; border-top-right-radius: 5px; text-align: left" valign="top">
+					   
+					 
+                                   <img src="~/Png/FAQ-icon.png" width="30"/> <span style="color: darkorchid">@Html.DisplayFor(m => ad.Question)</span><br/>
+                               </td>
+                           </tr>
+                    </tbody></table>
+            </div>
+
+
+            <br/>
+            <br/>
+        }
+    }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        }</p>
+    </div>
+    <div class="tab-pane fade" id="account">
+        <p>
+                            
+                        
+            <table class="table table-bordered" id="userProTab">
+    
+                <tr>
+                    <th colspan="2" style="text-align: center;background: green;color: #fff">User Account Info</th>
+                </tr>
+  
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>Firstname</td>
+                        <td style="font-family: Courier New">
+              
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+        
+                    </tr>
+                    <tr>
+                        <td>Lastname:</td>
+                        <td style="font-family: Courier New">
+                            @Html.DisplayFor(modelItem => item.LastName)
+                    
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Username
+                        </td>
+                        <td style="font-family: Courier New">
+                            @Html.DisplayFor(modelItem => item.UserName)
+       
+                        </td>
+                    </tr><tr>
+                             <td>
+                                 Country
+                             </td>
+                             <td style="font-family: Courier New">
+                                 @Html.DisplayFor(modelItem => item.Country)
+       
+                             </td>
+                         </tr><tr>
+                                  <td>Email</td>
+                                  <td style="font-family: Courier New">
+                                      @Html.DisplayFor(modelItem => item.Email)
+                                                  
+ 
+                                  </td>
+        
+                              </tr>
+                    <tr>
+                     
+                 
+                    </tr>
+                }
+    
+    
+
+            </table>
+            
+            
+         
+
+        </p>
+        
+        
+        
+        
+       
+
+
+
+   
+     
+   
+        
+        
+        
+        
+
+    </div>
+    
+ 
+    </div>
+
+
+    </div>
+ 
+   
+    
+
+<div id="dialog-alert" style="display: none">
+<p>
+@TempData["msg"]!
+</p>
+</div>
+ 
+<div id="dialog-confirm" style="display: none">
+<p style="font-family: Arial;font-size: 19px">
+<span  style="float: left; margin: 0 7px 20px 0;"></span>
+
+    <img src="~/Content/icon/1405880767_warning_48.png" />
+    Are you sure to delete?
+</p>
+</div>
+ 
+<div id="dialog-edit" style="display: none">
+</div>
+<div id="dialog-detail" style="display: none">
+</div>
+
+
+
+    
+    
+<script>
+   
+</script>
+   
+    
+  

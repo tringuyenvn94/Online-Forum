@@ -1,0 +1,382 @@
+﻿@using ForumDisscussion.Models
+@model  IEnumerable<QuestionList>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewData["c"] != null)
+{
+    <style>
+        #serbox {
+            border: 2px solid red;
+        }
+    </style>
+}
+
+   
+
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script src="~/KendoUI/kendo.all.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+@{
+    var db = new ForumDataBaseConnectionContext();
+
+    }
+
+        @using (Html.BeginForm("Index", "Home",FormMethod.Post))
+        {
+          
+     
+            
+            <table>
+                <tr>
+                    <td>   <input type="text" id="QuestionSearch" class="search" name="searchName"  style="height: 39px"/>
+                         
+                   
+</td>
+                    <td>  
+                        <button style="color: white"type="submit" class="btn btn-small"   id="searchButton">
+                            <i class="icon-search "></i>  Search
+                        </button></td>
+                    <td>
+                        <div style="display: none" id="loadingImage">
+                            <img src="~/Png/ajax-loaderr.gif" />
+                        </div></td>
+                </tr>
+                <tr>
+                    <td colspan="3">           @if (Convert.ToInt32(ViewData["reqErrorMsg"]) == 11)
+            {
+    <div style="font-family: Courier New;color: red;text-align: center;font-size: 19px;">* Please Enter a category to search</div>
+
+            } </td>
+                </tr>
+            </table>
+                       
+                     
+                        
+                   
+                  
+                        
+                   
+                
+
+        
+            
+         
+        }	
+						
+
+<h1 style="text-align: center;font-family: Trebuchet;font-size: 18px">
+
+    Forum Questions List
+</h1>
+
+<div id="">
+
+<table id="homeKedoGrid">
+        <colgroup>
+            <col style="width:55%" />
+            <col style="width:15%" />
+            <col style="width:10%" />
+            <col style="width:10%" />
+            <col />
+        </colgroup>
+        <thead>
+
+            <tr>
+                <th style="text-align: center" data-sortable="false" data-menuable="false" data-filterable="false">
+                    Questions
+
+                    <img src="~/Images/help_circle_blue.png" width="25" />
+
+
+
+                </th>
+                <th style="text-align: center">
+                    Category
+
+                </th>
+
+
+                <th style="text-align: center" data-filterable="false">
+                    Views
+                </th>
+
+                <th style="text-align: center" data-filterable="false">
+                    Replies
+
+
+
+                </th>
+                   @if (Request.IsAuthenticated)
+                {
+                    var d = new AdminDbContext();
+                    var check = d.Admin.SingleOrDefault(m => m.Email.Equals(User.Identity.Name) && m.Role.Equals("admin"));
+                    if (check!=null)
+                    {
+                        <th>Actions</th>
+                    
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            
+           
+
+
+            @foreach (var item in Model)
+            {
+
+                var countReply = db.Answers.Where(m => m.QuestionId.Equals(item.Id)).Select(m=>m.AnswerId).Count();
+                <tr>
+                    <td style="text-align: center">
+
+
+                        <div id="homQues">
+
+                            @if (countReply > 0)
+                            {
+                                <img src="~/Png/clear_green_button.png" width="25"/>
+                            }
+                            @if (countReply == 0)
+                            {
+                                <img src="~/Png/question_balloon(1).png" width="30" />
+
+                            }
+                            <a href="@Url.Action("PostAnswer", "Home", new { id = item.Id })"  class="quesLink" id="quesLink">
+                               
+                                
+                                 <span id="c">@Html.DisplayFor(modelItem => item.Question)</span>       
+
+
+                            </a>
+
+                        </div>
+
+                        <div>
+                            <b> Posted by </b>   <span id="homPostUsr">   @Html.DisplayFor(modelItem => item.PostedBy)</span>,  <b>Posted date</b>  <span id="homPostUsr">  @Html.DisplayFor(modelItem => item.Posteddate)</span>&nbsp; <img src="data:image/jpg;base64,@Convert.ToBase64String(item.Image)" width="40" height=""  class="img-circle" />
+
+                        </div>
+                    </td>
+
+                    <td id="g">
+                        <span style=" text-align: center; color: cornflowerblue;">@Html.DisplayFor(modelItem => item.Category)</span>
+                    </td>
+
+                    <td style="text-align: center">
+                        @Html.DisplayFor(modelItem => item.Views)
+                    </td>
+                    <td style="text-align: center">
+
+
+                        @countReply
+
+
+
+                    </td>
+                         <td style="text-align: center">
+                        <span id="delId">
+                          @Html.ActionLink("Delete", "DeleteUserQuestion", new { id = item.Id }, new { @class = "lnkDelete button danger icon remove"})
+                  
+                        </span> 
+                        
+                         </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+   
+    </div>
+
+
+    <div id="searDialog"></div>
+
+
+
+
+
+
+<div id="dialog-alert" style="display: none">
+<p>
+@TempData["msg"]!
+</p>
+</div>
+ 
+<div id="dialog-confirm" style="display: none">
+<p style="font-family: Arial;font-size: 19px">
+<span  style="float: left; margin: 0 7px 20px 0;"></span>
+    <img src="~/Png/alert.png" width="40"/>
+   
+    <span style="font-family: Courier New">
+        Are you sure to delete this Question <b>parmanently</b>?If  there is any record(e.g. Reply,Comment....) that is related to this Question will also be deleted <b>parmanently</b>.
+
+    </span>
+   
+
+</p>
+</div>
+
+
+
+    <div id="tooltip"></div>
+<script>
+    $(document).ready(function () {
+
+        
+        $("#divLoading").hide();
+        $(".hi").hide();
+        var url = "";
+
+        if ('@TempData["msg"]' != "") {
+            $("#dialog-alert").dialog('open');
+        }
+
+    
+        $("#dialog-confirm").dialog({
+            autoOpen: false,
+            title: ' Delete Pannel',
+            resizable: false,
+            height: 250,
+            width: 590,
+            position: [370, 120],
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar-close").hide();
+
+            },
+            buttons: {
+                "Yes": function () {
+                    $(this).dialog("close");
+                    window.location.href = url;
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+
+
+        $(".lnkDelete").live("click", function (e) {
+          
+            url = $(this).attr('href');
+            $("#dialog-confirm").dialog('open');
+
+            return false;
+        });
+
+
+
+        $("#btnClose").live("click", function (e) {
+            $("#dialog-edit").dialog("close");
+            return false;
+        });
+    });
+</script>
+
+
+    <script>
+
+
+        $("#QuestionSearch").kendoAutoComplete({
+                minLength: 2,
+
+
+
+               
+                dataSource: {
+                    type: "JSON",
+
+                    transport: {
+                        read: "/Home/DisplayCat"
+
+                    },
+                }
+
+            });
+   
+        $(".quesLink").css('color', 'darkcyan').css('background', 'none');
+        $("#homeKedoGrid").kendoGrid({
+
+
+            pageable: {
+                refresh: true,
+                pageSizes: true,
+                buttonCount: 5
+            }
+
+            , dataSource: { pageSize: 5 }
+
+            ,
+
+            scrollable: false
+            ,
+            sortable: true,
+            filterable: true,
+            columnMenu: false,
+            serverPaging: true,
+            type: "odata"
+        });
+        $(function () {
+
+       
+            $(".quesLink").css('color', 'darkcyan');
+            $(".quesLink").hover(function () {
+
+            });
+            $("#serbox").autocomplete({
+                source: '@Url.Action("GetCustomer")', minLength: 2
+            });
+
+        });
+
+
+     
+
+          
+        $(".lnkEdit").click(function () {
+            JavascriptFunction();
+        });
+
+
+        var tooltip = $("#QuestionSearch").kendoTooltip({
+            autoHide: false,
+            showOn: "hover",
+            position: "right",
+            filter: "div",
+            width: 200,
+            content: "<img src='/Png/1425571656_001_50.png' width='17'/>  <span style='font-family:Courier New;'>Enter a category to search. You can enter full category name or first few (at least two chracters to get auto complete support) chracters of the category.Chracters are not case sensitive</span>"
+        }).data("kendoTooltip");
+     
+        $("#QuestionSearch").hover(function() {
+          
+            if ($("#QuestionSearch").val().length >= 2) {
+                tooltip.hide();
+            } else {
+                tooltip.show();
+            }
+        });
+        $("#QuestionSearch").mouseleave(function() {
+            tooltip.hide();
+        });
+        $("#QuestionSearch").keyup(function () {
+            tooltip.hide();
+        });
+
+
+        $("#searchButton").click(function () {
+            if ($("#QuestionSearch").val() != "") {
+                loading();
+            }
+        });
+        $("#quesLink").click(function () {
+       
+                loading();
+          
+        });
+    </script>

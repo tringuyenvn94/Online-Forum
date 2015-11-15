@@ -1,0 +1,196 @@
+﻿
+
+@using ForumDisscussion.Models
+@model QuestionPostModel
+@{
+    ViewBag.Title = "PostQuestion";
+}
+<style>#msgBox{ height: 400px;width:580px}</style>
+
+
+
+<script src="~/KendoUI/jquery.min.js"></script>
+<link href="~/KendoUI/kendo.common.min.css" rel="stylesheet" />
+<link href="~/KendoUI/kendo.dataviz.min.css" rel="stylesheet" />
+<link href="~/KendoUI/kendo.default.min.css" rel="stylesheet" />
+<link href="~/KendoUI/kendo.rtl.min.css" rel="stylesheet" />
+<script src="~/KendoUI/kendo.all.min.js"></script>
+@{
+
+
+
+    var scrollPositionX = string.Empty;
+    if (IsPost)
+    {
+        scrollPositionX = Request.Form["ScrollPositionX"];
+
+    }
+
+
+}
+<input id="logC" type="text" value="@ViewData["unLUQC"]" style="display: none" />
+<input type="text" value="@ViewBag.authErrorState" id="loginWarning" style="display: none" />
+
+
+@Html.Partial("_DisplayQuestions")
+
+@using (Html.BeginForm("PostQuestion", "UserQuestions", FormMethod.Post, new { id = "ticketsForm" }))
+{
+
+
+
+    <div id="pagLink">
+
+
+    </div>
+
+    <div id="postQuesPa">
+        Post Your Question
+        <img src="~/Png/qu.jpg" width="60" />
+
+    </div>
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Question</legend>
+
+        <p>
+
+
+
+
+        </p>
+        <div class="editor-label">
+            Category
+        </div>
+
+        <div class="editor-field">
+            <span>
+                @Html.DropDownList("Category", (MultiSelectList)ViewBag.Categories, "Select Category", new { id = "me" })
+                @if (ViewBag.authErrorState != 402)
+                {
+                    @Html.ValidationMessageFor(model => model.Category)
+
+                }
+
+            </span>
+
+
+            <br />
+
+
+            <br />
+
+
+
+
+        </div>
+        <div class="editor-field">
+        </div>
+
+        <div class="editor-label">
+            Question
+        </div>
+        <div class="editor-field">
+            @ViewBag.t
+            @Html.TextAreaFor(model => model.QuestionMessage, new { id = "msgBox", @class = "ansBox emptyQuestionBox" })
+
+            @if (ViewBag.authErrorState != 402)
+            {
+                @Html.ValidationMessageFor(model => model.QuestionMessage)
+
+            }
+
+        </div>
+
+
+
+        <br />
+
+        <p>
+
+
+            <input type="submit" value="POST" class="btn btn-info" id="quesPostButton" />
+
+            <input type="hidden" id="ScrollPositionX" name="ScrollPositionX" value="@scrollPositionX" />
+
+
+
+        </p>
+        <p class="status"></p>
+    </fieldset>
+}
+
+<div id="UnAuthUserErr" style="visibility: hidden">
+
+
+
+    <span id="unauthDialog">
+
+        <img src="~/Png/alert.png" width="40" />
+        It seems you are not <strong>logged in</strong>. You must have to <strong><u>@Html.ActionLink("Login", "Login", "Account", new { area = "" }, new { @class = "logLink" })</u></strong> to Post  a <strong>Question</strong>.Without <b>login</b> you cann't <b>Post</b> Question
+    </span>
+    <div>
+
+    </div>
+
+
+
+</div>
+
+<script>
+
+
+  
+    $(".quesLink").css('background', 'none');
+    $("#k").kendoGrid({
+
+
+        pageable: {
+            refresh: true,
+            pageSizes: true,
+            buttonCount: 5
+        }
+
+           , dataSource: { pageSize: 5 }
+
+           ,
+
+        scrollable: false
+           ,
+        sortable: true,
+        filterable: true,
+        columnMenu: false,
+        serverPaging: true,
+        type: "odata"
+    });
+
+
+  
+    $(function () {
+      
+        $("#quesPostButton").css('color', 'white');
+    });
+
+    var erroec = $("#loginWarning").val();
+
+    if (erroec == 402) {
+
+        $("#quesPostButton").attr('disabled', true);
+
+
+        $("#UnAuthUserErr").kendoWindow({
+            position: {
+                top: "30%",
+                left: "30%"
+            }, title: "Login Warning Dialog", height: 100, width: 600
+        });
+
+      
+
+    }
+
+</script>
+
+
+

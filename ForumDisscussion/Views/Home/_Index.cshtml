@@ -1,0 +1,172 @@
+﻿
+
+@model IEnumerable<ForumDisscussion.Models.QuestionList>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewData["c"] != null)
+{
+    <style>
+        #serbox {
+            border: 2px solid red;
+        }
+    </style>
+}
+
+
+
+<script src="~/KendoUI/jquery.min.js"></script>
+<script src="~/KendoUI/kendo.all.min.js"></script>
+
+
+
+
+<h1 style="text-align: center;font-family: Trebuchet;font-size: 18px">
+
+    Forum Questions List
+</h1>
+
+<div id="QuestionList">
+
+
+    <table id="homeKedoGrid">
+        <colgroup>
+            <col style="width:55%" />
+            <col style="width:15%" />
+            <col style="width:10%" />
+            <col style="width:10%" />
+            <col />
+        </colgroup>
+        <thead>
+
+            <tr>
+                <th style="text-align: center" data-sortable="false" data-menuable="false" data-filterable="false">
+                    Questions
+
+                    <img src="~/Images/help_circle_blue.png" width="25" />
+
+
+
+                </th>
+                <th style="text-align: center">
+                    Category
+
+                </th>
+
+
+                <th style="text-align: center" data-filterable="false">
+                    Views
+                </th>
+
+                <th style="text-align: center" data-filterable="false">
+                    Replies
+
+
+
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count() == 0)
+            {
+            <tbody>
+            <td colspan="8" style="font-family: Arial;font-size: 25px">
+
+                <div id="NoFoundDilog">
+
+                    <img src="~/Png/exclamation_circle.png" width="60" />
+                    Sorry,Nothing Matched for your entered <b>Category</b>.
+                </div>
+
+
+            </td>
+            </tbody>
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align: center">
+
+
+                        <div id="homQues">
+                            <img src="~/Png/question_balloon(1).png" width="30" />
+
+                            <a href="@Url.Action("PostAnswer", "Home", new { id = item.Id })" class="quesLink">
+
+                                @Html.DisplayFor(modelItem => item.Question)
+                            </a>
+                        </div>
+
+                        <div>
+                            <b> Posted by </b>   <span id="homPostUsr">   @Html.DisplayFor(modelItem => item.PostedBy)</span>,  <b>Posted date</b>  <span id="homPostUsr">  @Html.DisplayFor(modelItem => item.Posteddate)</span>
+                        </div>
+                    </td>
+
+                    <td style="text-align: center">
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+
+                    <td style="text-align: center">
+                        @Html.DisplayFor(modelItem => item.Views)
+                    </td>
+                    <td style="text-align: center">
+                        @Html.DisplayFor(modelItem => item.Answers)
+                    </td>
+
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+
+    <div id="searDialog"></div>
+
+
+
+
+
+    <script>
+        $(".quesLink").css('color', 'darkcyan').css('background', 'none');
+        $("#homeKedoGrid").kendoGrid({
+            //pageable: true
+
+            pageable: {
+                refresh: true,
+                pageSizes: true,
+                buttonCount: 5
+            }
+
+            , dataSource: { pageSize: 5 }
+
+            ,
+
+            scrollable: false
+            ,
+            sortable: true,
+            filterable: false,
+            columnMenu: false,
+            serverPaging: true,
+            type: "odata"
+        });
+        $(function () {
+
+
+            $(".quesLink").css('color', 'darkcyan');
+            $(".quesLink").hover(function () {
+
+            });
+            $("#serbox").autocomplete({
+                source: '@Url.Action("GetCustomers")', minLength: 2
+            });
+
+        });
+        $(".lnkEdit").click(function () {
+            JavascriptFunction();
+        });
+
+    </script>

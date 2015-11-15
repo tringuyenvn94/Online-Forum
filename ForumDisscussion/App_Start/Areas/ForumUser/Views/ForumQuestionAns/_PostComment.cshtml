@@ -1,0 +1,26 @@
+﻿@model ForumDisscussion.Models.Comment
+
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<style>
+    #commtBox{height: 150px}
+</style>
+@using (Html.BeginForm("PostComment", "ForumQuestionAns",FormMethod.Post))
+{
+    <div>
+        <label>Comment</label>@Html.TextAreaFor(m=>m.CommentMsg,new{id="commtBox"})
+        @Html.ValidationMessageFor(m=>m.CommentMsg)
+    </div><br/>
+    <div>
+        <span><input type="submit" value="Post"class="btn btn-primary"/></span><span>@Html.ActionLink("Close","CommentCancel","ForumQuestionAns",new{@class="btn btn-danger cancelButton"})</span> 
+    </div>
+}
+
+<script>
+    $(function() {
+        $(".cancelButton").css('color', 'white');
+    });
+</script>

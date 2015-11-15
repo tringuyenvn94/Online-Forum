@@ -1,0 +1,175 @@
+﻿@*@model ForumDisscussion.Models.RegisterModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>Create a new account.</h2>
+</hgroup>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <fieldset>
+        <legend>Registration Form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.ConfirmPassword)
+                @Html.PasswordFor(m => m.ConfirmPassword)
+            </li>
+        </ol>
+        <input type="submit" value="Register" />
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}*@
+
+
+
+
+
+@using ForumDisscussion.Models
+@model ForumDisscussion.Models.UserSignUpModel
+
+@{
+    ViewBag.Title = "SignUp";
+}
+
+
+<link href="@Url.Content("~/Content/ImageArea.css")" rel="stylesheet" />
+
+
+
+@section Scripts
+{
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.imgareaselect.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.fancyupload.js")"></script>
+<script>
+    $(document).ready(function () {
+        initSelect();
+    });
+</script>
+}
+@*<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/LoginFailed.js"></script>*@
+
+<h2>SignUp </h2>
+
+@using(Html.BeginForm("SignUp","UserSignUp",FormMethod.Post, new { enctype = "multipart/form-data" }))
+
+{
+    
+    
+    
+    
+     @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>ForumUser</legend>
+
+  
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FirstName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FirstName)
+            @Html.ValidationMessageFor(model => model.FirstName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LastName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LastName,new{id="in"})
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.UserName,new{id="in"})
+            @Html.ValidationMessageFor(model => model.UserName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Country)
+        </div>
+        <div class="editor-field">
+            
+            <select name="Country">
+                
+                <option value="">Select Your Country</option>
+                <option value="Bangladesh">Bangladesh</option>
+                <option value="India">India</option>
+                <option value="Srilanka">Srilanka</option>
+                <option value="Pakistan">Pakistan</option>
+                <option value="Nepal">Nepal</option>
+                <option value="Australia">Australia</option>
+                <option value="America">America</option>
+                <option value="Mianmar">Mianmar</option>
+                <option value="Japan">Japan</option>
+
+            </select>
+            @Html.ValidationMessageFor(model => model.Country)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Email)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Email,new{id="in"})
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+        
+        
+              <div class="editor-label">
+            @Html.LabelFor(model => model.Image)
+        </div>
+        <div class="editor-field">
+  
+              @Html.FileFor(model => model.File)
+             <img alt="Field for image cutting" width="100"  id="preview" src="@Url.Content("~/Content/empty.png")" />
+   
+            @Html.ValidationMessageFor(model => model.Image)
+        </div>
+        
+        
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Password)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Password,new{id="in"})
+            @Html.ValidationMessageFor(model => model.Password)
+        </div>
+        
+               <div class="editor-label">
+            @Html.LabelFor(model => model.COnfirmPassword)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.COnfirmPassword,new{id="in"})
+            @Html.ValidationMessageFor(model => model.COnfirmPassword)
+        </div>
+    
+        <br/>
+        <div>
+            <input type="submit" value="Sign Up" class="btn btn-success" />
+        </div>
+    </fieldset>
+}

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ForumDbModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="ViewDbCon" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="View_AnsweredQuestion" EntityType="ForumDbModel.View_AnsweredQuestion" />
+    <EntitySet Name="Comments" EntityType="ForumDbModel.Comment" />
+  </EntityContainer>
+  <EntityType Name="View_AnsweredQuestion">
+    <Key>
+      <PropertyRef Name="QquestID" />
+      <PropertyRef Name="Question" />
+      <PropertyRef Name="QcatID" />
+      <PropertyRef Name="CategoryName" />
+      <PropertyRef Name="QuserID" />
+      <PropertyRef Name="PostedDate" />
+      <PropertyRef Name="views" />
+      <PropertyRef Name="Replies" />
+      <PropertyRef Name="UuserID" />
+      <PropertyRef Name="UserName" />
+    </Key>
+    <Property Name="QquestID" Type="Int32" Nullable="false" />
+    <Property Name="Question" Type="String" Nullable="false" MaxLength="350" Unicode="false" FixedLength="false" />
+    <Property Name="QcatID" Type="Int32" Nullable="false" />
+    <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="QuserID" Type="Int32" Nullable="false" />
+    <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="views" Type="Int32" Nullable="false" />
+    <Property Name="Replies" Type="Int32" Nullable="false" />
+    <Property Name="UuserID" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="CommentId" />
+    </Key>
+    <Property Type="Int32" Name="CommentId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="CommentMsg" Nullable="false" MaxLength="350" FixedLength="false" Unicode="false" />
+    <Property Type="DateTime" Name="PostedDateTime" Nullable="false" Precision="3" />
+    <Property Type="Int32" Name="UserId" Nullable="false" />
+    <Property Type="Int32" Name="QuestionId" Nullable="false" />
+  </EntityType>
+</Schema>

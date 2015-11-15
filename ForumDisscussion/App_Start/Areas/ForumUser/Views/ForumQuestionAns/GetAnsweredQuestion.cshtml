@@ -1,0 +1,178 @@
+﻿@using ForumDisscussion.Models
+@model IEnumerable<ForumDisscussion.Models.AnsweredQuestionModel>
+
+@{
+    ViewBag.Title = "GetAnsweredQuestion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    th {
+        font-family: Courier New;
+        font-size: 22px;
+    }
+
+   
+    a td {
+        font-family: Arial;
+    }
+</style>
+
+<script src="~/KendoUI/jquery.min.js"></script>
+<script src="~/KendoUI/kendo.all.min.js"></script>
+@using (Html.BeginForm("GetAnsweredQuestion", "ForumQuestionAns", FormMethod.Post))
+{
+    <span class="typeahead-query">
+        <input style="background-image: url(/Png/search.png); background-repeat: no-repeat; background-position: right"
+               id="searchBoxFoAnsQues"
+               name="cname"
+               type="search"
+               placeholder="Search By Category" class="input-medium search-query" />
+    </span>
+
+    <input type="submit" value="Search" class="btn" id="searchButton" onclick="JavascriptFunction();" />
+
+}
+<span style="font-family: Courier New;color: red">@ViewBag.reqErrorMsg</span><br/><br/>
+
+@{
+    VirtualDbContext b = new VirtualDbContext();
+}
+
+<table id="answeredQuesKendoGrid">
+    <thead>
+        <tr>
+            <th style="text-align: center">
+                Question
+            </th>
+            <th style="text-align: center">
+                Category
+            </th>
+            <th style="text-align: center">
+                Views
+            </th>
+            <th style="text-align: center">
+                Replies
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var v in (IEnumerable<QuestionList>)ViewData["AnsweredQuesList"])
+        {
+
+            <tr>
+                
+
+
+                <td>
+
+
+                    <img src="~/Png/question_balloon(1).png" width="25" />
+                    <a href="@Url.Action("PostAnswerForAnsweredQuestion", "ForumQuestionAns", new { id = v.Id })" class="quesLink">
+
+
+
+                        <span style=" color: green;background: none;text-align: left">
+                            @Html.DisplayFor(modelItem => v.Question)
+                        </span>
+                    </a>
+
+
+
+
+                    <br />
+                    <span style=" color: silver">By</span>     <span>@Html.DisplayFor(m => v.PostedBy)</span> <span style=" color: silver">date </span> <span>@Html.DisplayFor(m => v.Posteddate)</span>
+                    <img src="data:image/jpg;base64,@Convert.ToBase64String(v.Image)" width="50px" height="50" class="img-circle" />
+                </td>
+                <td>
+                    @Html.DisplayFor(m => v.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => v.Views)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => v.Answers)
+                </td>
+            </tr>
+
+
+
+        }
+    </tbody>
+</table>
+
+
+
+
+
+
+<script>
+    
+
+
+    $("#searchBoxFoAnsQues").kendoAutoComplete({
+        minLength: 2,
+
+
+
+
+        dataSource: {
+            type: "JSON",
+
+            transport: {
+                read: "/ForumQuestionAns/DisplayCat"
+
+            },
+        }
+
+    });
+    $(function () {
+
+        $(".quesLink").css('background', 'none').css('color', 'green').css('text-align', 'left');
+    });
+
+    $("#answeredQuesKendoGrid").kendoGrid({
+
+
+        pageable: {
+            refresh: true,
+            pageSizes: true,
+            buttonCount: 5
+        }
+
+        , dataSource: { pageSize: 5 }
+
+        ,
+
+        scrollable: false
+        ,
+        sortable: true,
+        filterable: false,
+        columnMenu: false,
+        serverPaging: true,
+        type: "odata"
+    });
+</script>
+
+<script>
+
+    $(".btn-success").click(function () {
+        JavascriptFunction();
+    });
+</script>
+<script>
+    $(function () {
+        $(".btn").css('color', 'white');
+
+        $("#btnSearch").click(function () {
+            var box = $("#txtSearch").val();
+            if (box != "") {
+                JavascriptFunction();
+            }
+
+        });
+
+    });
+
+
+</script>

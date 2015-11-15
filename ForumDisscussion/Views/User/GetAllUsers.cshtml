@@ -1,0 +1,36 @@
+﻿@using ForumDisscussion.Models
+
+@{
+    ViewBag.Title = "GetAllUsers";
+}
+
+<h2>GetAllUsers</h2>
+
+@foreach (var item in (IEnumerable<UsersDetailsViewModel>)ViewData["users"])
+{
+    
+    <table>
+        <tr>
+            <td>
+                  <img src="data:image/jpg;base64,@Convert.ToBase64String(item.UserImage)" width="70px" height="60"  class="img-circle"/>
+   
+            </td>
+              
+            <td>
+            <span style="color: forestgreen">@Html.DisplayFor(m=>item.Username)</span><br/>
+  <span style="color: forestgreen"> @Html.DisplayFor(m=>item.Country)</span><br/>
+     <span style="color: forestgreen"><span style="color: darkgray">Question Post</span>  @Html.DisplayFor(m=>item.TotalQuestion)</span><br/>
+   <span style="color: forestgreen"><span style="color: darkgray">Reply Post</span>  @Html.DisplayFor(m=>item.TotalReply)</span>   <br/>
+   <span style="color: forestgreen"><span style="color: darkgray">Comment Post</span>  @Html.DisplayFor(m=>item.TotalComment)</span>   <br/>
+      <span style="color: forestgreen"><span style="color: darkgray">Valied Post</span>  @Html.DisplayFor(m=>item.TotalValidPost)</span>   
+.
+
+                .
+
+            </td>
+        </tr>
+    
+    </table>
+    
+
+}

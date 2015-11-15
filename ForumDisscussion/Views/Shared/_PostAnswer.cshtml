@@ -1,0 +1,431 @@
+﻿
+@using ForumDisscussion.Models
+@model UsersAnsPost
+
+
+
+    @{
+
+        ViewBag.Title = "PostAnswer";
+        int questionId = Convert.ToInt32(@ViewData["questionId"]);
+    }
+
+<style>
+    #answerPostToltipMsgId {
+        font-size:17px;font-family:Arial;
+    }
+    .resize{ height: 400px;width:830px;font-size:19px;font-family:Arial}
+    .h{ color: red;background: firebrick}
+</style>
+<link href="~/CSS/gh-buttons.css" rel="stylesheet" />
+<link href="~/CSS/ReplyCss/style.css" rel="stylesheet" />
+<link href="~/jQxWidegets/jqx.base.css" rel="stylesheet" />
+
+<link href="~/js/jquery.highlighttextarea.min.css" rel="stylesheet" />
+
+<script src="~/jQxWidegets/jquery-1.11.1.min.js"></script>
+<script src="~/KendoUI/kendo.all.min.js"></script>
+
+<script src="~/js/jquery.highlighttextarea.js"></script>
+<input type="text" id="operationId" style="display: none" value="@ViewBag.operation"/>
+<input type="text" id="checkCrontroller" style="display: none" value="@ViewBag.checkCrontroller"/>
+
+
+@{
+
+    var db = new ForumDataBaseConnectionContext();
+         
+    var scrollPositionX = string.Empty;
+    if (IsPost)
+    {
+        scrollPositionX = Request.Form["ScrollPositionX"];
+
+    }
+
+
+}
+
+
+
+<h2></h2>
+	<div style="margin:0px;">
+			
+			<table style="width:100%; border-collapse:separate; border:1px solid #aaa;" class="sc_rc">
+				<tbody><tr>
+					<td style="width:100px; padding:5px; border-right:1px solid #aaa;background-image: -webkit-linear-gradient(top,#e3e3e3,#efefef);background-image: linear-gradient(to bottom, #E3E3E3, #EFEFEF); border-bottom-left-radius: 5px; border-top-left-radius: 5px;" valign="top">
+				<span> <img src="data:image/jpg;base64,@Convert.ToBase64String(ViewBag.quesuserImg)" width="70px" height="40"/></span>   
+     
+						<div><span id="homPostUsr">@ViewBag.userName</span></div>
+						<div><span id="homPostUsr">@ViewBag.PostDate</span></div>
+						<div></div>
+					
+					</td>
+					<td style="padding:5px; background:#fff; -ms-border-bottom-right-radius: 5px; border-bottom-right-radius: 5px; -ms-border-top-right-radius: 5px; border-top-right-radius: 5px;text-align: left" valign="top">
+						<img src="~/Images/icon_question.png" width="50" />  <span id="homQues">@ViewBag.question  </span>	
+					</td>
+				</tr>
+			</tbody></table>
+		</div>
+
+<span id="vId" style="font-weight: bold;font-size: 20px;">@if (Convert.ToInt32(@ViewData["totalAns"]) == 0)
+                                                          {
+                                                     <span>No Reply</span>
+                                                          }
+                                                          else
+                                                          {
+                                                             <span>@ViewData["totalAns"]</span>
+                                                          }
+</span> <span id="vId" style="font-family: Arial;font-size: 19px"> @if (Convert.ToInt32(@ViewData["totalAns"]) == 1)
+                                                                   {
+                                                                                    <span>Reply</span>
+                                                                   }
+    
+    
+    
+     @if (Convert.ToInt32(@ViewData["totalAns"]) > 1)
+     {
+                              <span>Replies</span>
+     }
+    
+                                                                              </span>
+    <img src="~/Png/round_down_arrow.png" />
+
+        
+<table class="common-tbl common-tbl-threads">
+    <tr class="bg-color">
+         <td   >
+      
+       
+       
+        </td>
+    </tr>
+</table>
+
+   
+        
+                
+                 
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+   
+        <div>
+            @foreach (var h in (IEnumerable<AnsPostedUser>)ViewData["GetAns"])
+            {
+                try
+                {
+                    ViewBag.replyCount = db.Comment.Where(m => m.AnswerId.Equals(h.AnsId)).Select(m => m.CommentId).Count();
+                }
+
+                catch (Exception e) { Response.Write(e); }
+             
+<div id="comments">
+
+
+<ul  ><li class="comment even thread-even depth-1" id="li-comment-3225"><div id="comment-3225"><div class="comment-author"> 
+
+ 
+     <img class="avatar avatar-80 photo img-circle" src="data:image/jpg;base64,@Convert.ToBase64String(h.Image)" width="70px" height="40"/>
+                   
+</div>
+    
+    <div class="comment-content"><div> <cite>
+ <span style="color: gray">  @Html.DisplayFor(m => h.Username)</span><span style="color:#CDC8B1"> @Html.DisplayFor(m => h.PostedDate)</span> </cite>
+
+</div>
+
+
+
+
+
+
+			
+ <a href="@Url.Action("PostComment", "Home", new { id =h.AnsId})"  id="replyId">
+                               
+     
+     <span style="font-size:19px" > @Html.DisplayFor(m => h.Answer)</span>
+   
+     </a>
+    <br />
+    
+    <span style="position:absolute;right:3%">@if(ViewBag.replyCount!=null&&ViewBag.replyCount>1){@ViewBag.replyCount <span style="color:#A9A9A9">comments</span>}@if(ViewBag.replyCount!=null&&ViewBag.replyCount==1){@ViewBag.replyCount <span style="color:#A9A9A9">comment</span>}@if (ViewBag.replyCount == 0)
+                                                                                                                                                                                                                                 {<span style="color:#A9A9A9">no comment</span>}   </span>
+
+
+
+</div>
+    </div>
+</li></ul>
+   
+   
+    </div>
+	     
+   		
+            }
+        </div>
+     
+          
+            if(ViewBag.postButtonHideId!=1){
+            <div class="editor-label">
+  
+                <label><img src="~/Images/ic_post_plus.png" width="60"/>&nbsp; Post Your Reply</label>
+            </div>
+            <div class="editor-field">
+   
+                @Html.TextArea("msg", new { id = "msgBoxx", @class = "ansBox resize" })
+             <div id="commErrorMsg" style=@((ViewData["ReqMsg"] != null && Convert.ToInt32(ViewData["ReqMsg"]) == 3) ? "display:block" : "display:none")>@ViewData["Mess"]</div>
+            </div>
+            <br/>
+               <input type="hidden" id="ScrollPositionX" name="ScrollPositionX" value="@scrollPositionX" />
+         
+         <span> <input type="submit" value="POST" id="mesPostButton" class=" btn btn-primary "/></span>   
+       
+            }
+        
+        
+        <span> @Html.ActionLink("Back", "Index", "Home", new { area = "" }, new { @class = "button icon arrowleft  backLink bakToHom" })  </span>
+
+
+               
+     
+                  
+    }
+               
+<input type="text" id="gm" value="@ViewData["c"]" style="display:none"/>
+
+<div id="dialog-alert" style="display: none">
+<p>
+@TempData["msg"]!
+</p>
+</div>
+ 
+<div id="dialog-confirm" style="display: none">
+<p>
+<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+Are you sure to delete?
+</p>
+</div>
+ 
+<div id="dialog-edit" style="display: none">
+</div>
+<div id="dialog-detail" style="display: none">
+</div>
+<div id="t" style="display: none">
+    <img src="~/Png/exclamation_circle.png" width="34px" style="font-family: Arial;font-size: 19px;"/>   
+    <span id="unauthDialog"> It seems you are not <strong>logged in</strong>. You must have to <strong><u>
+                                                                                                         
+                                                                                                              
+                                                                                                                                                                                                            @Html.ActionLink("Login", "Login", "Account", new { id = ViewBag.id }, new { @class = "  backLink" })
+
+                                                                                                          
+              
+
+                                                                                                       </u></strong> to Post  <strong>Answer</strong></span>
+  
+   
+
+</div>
+  
+
+
+<input type="text" value="@ViewBag.senWordsMsg" id="senwId" style="visibility: hidden"/>
+
+
+
+@{
+    if (ViewBag.senWordsMsg == 11)
+    {
+        var w = "";
+        <div id="senWodsId" style="font-family:Courier New;font-size:19px">
+  
+       
+            <span>We have found the following sensitives words in your post</span><br/><br/>
+            @foreach (var item in (IEnumerable<SensitiveWordsViewModel>)ViewData["s"])
+            {
+                w += item.SensitiveWords+" , ";
+            }
+            <span style="text-align: center; font-family: Courier New; color: red">@w.TrimEnd(',', ' ')</span>
+
+
+   
+         
+            <br/><br/><span >You <b>cann't Post</b> this kind of words.Please <b>remove</b> this from your post.Then try  to post again.</span>
+
+        </div>
+    }
+}
+
+  
+
+
+
+ <div id="dialog-alert" style="display: none">
+<p>
+@TempData["msg"]!
+</p>
+</div>
+
+<div id="dialog-confirm" style="display: none">
+<p style="font-family: Arial;font-size: 19px">
+<span  style="float: left; margin: 0 7px 20px 0;"></span>
+    <img src="~/Png/alert.png" width="40"/>
+   
+    <span style="font-family: Courier New">
+        Are you sure to delete this Question <b>parmanently</b>?If  there is any record(e.g. Reply,Comment....) that is related to this Question will also be deleted <b>parmanently</b>.
+
+    </span>
+   
+
+</p>
+</div>
+
+
+
+<input type="hidden" value="@ViewData["PostNotAllowedId"]" id="postNotAllowedIdBox"/>
+<div id="postNotAllowedMessage" style="visibility: hidden;font-family: Courier New;font-size: 20px;">
+    <img src="~/Png/cancel(1).png" width="29"/>
+    You have already a <b>Reply</b> for this <b>Question</b> and you are <b>not allowed</b> to post more than one <b>Reply.</b>But you can <b>Edit</b> Your <b>Reply.</b>
+</div>
+  
+<script>
+ 
+    $(function () {
+
+        $("#msgBoxx").jqxTooltip({ content: '<p id="answerPostToltipMsgId">Thanks for your interest<br> to contribute answer in our<br> forum.<br> To <b>post</b> a better answer <br> maintain the following<br> <b>three</b> factors.<br><br><ol> <li><b>1</b> Read the <b>Question</b> carefully</li>  <li><b> 2.</b> Please be <b>sure</b> to <br>answer the question.</li><li><b>3.</b> <b>Think</b> about the answer<br> before answering.</li></ol><br></p>', position: 'right', trigger: "none", autoHide: false, closeOnClick: false });
+
+        $("#msgBoxx").mouseenter(function () {
+      
+                $("#msgBoxx").jqxTooltip("open");
+         
+        });
+        $("#msgBoxx").keyup(function () {
+            $("#msgBoxx").jqxTooltip("close");
+        });
+    });
+    $(".bakToHom").click(function() {
+        loading();
+    });
+</script>
+
+
+<script>
+
+    $(document).ready(function () {
+        $(".hi").hide();
+        var url = "";
+
+        if ('@TempData["msg"]' != "") {
+            $("#dialog-alert").dialog('open');
+        }
+
+        $(".lnkDelete").css('color', 'white');
+
+        $("#dialog-confirm").dialog({
+            autoOpen: false,
+            title: ' Delete Pannel',
+            resizable: false,
+            height: 250,
+            width: 590,
+            position: [370, 120],
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar-close").hide();
+
+            },
+            buttons: {
+                "Yes": function () {
+                    $(this).dialog("close");
+                    window.location.href = url;
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+
+
+        $(".lnkDelete").live("click", function (e) {
+           
+            url = $(this).attr('href');
+            $("#dialog-confirm").dialog('open');
+
+            return false;
+        });
+
+
+
+        $("#btnClose").live("click", function (e) {
+            $("#dialog-edit").dialog("close");
+            return false;
+        });
+    });
+</script>
+
+       
+
+<script>
+    $("#mesPostButton").click(function () {
+        $("#ScrollPositionX").val($(document).scrollTop());
+    });
+
+    $("#ScrollPositionX").each(function () {
+        var val = parseInt($(this).val(), 0);
+        if (!isNaN(val))
+            $(document).scrollTop(val);
+    });
+</script>
+<script>
+
+
+        $("#replyId").css('color', 'sandybrown');
+     
+
+    $("#replyId").hover(function() {
+        $("#replyId").css('text-decoration', 'underline').css('color', 'sandybrown').css('background', 'none');
+    });
+    $("#replyId").mouseleave(function () {
+        $("#replyId").css('text-decoration', 'none').css('color', 'sandybrown').css('background', 'none');
+    });
+    $("#replyId").click(function () {
+
+        loading();
+    });
+    if ($("#postNotAllowedIdBox").val() == 1) {
+        $("#postNotAllowedMessage").kendoWindow({
+            position: {
+                top: $(document).scrollTop()
+             
+            }, title: "Psot Error Dialog",width:600
+        });
+    }
+    if ($("#senwId").val() == 11) {
+   
+        $(".ansBox").attr('value', t);
+        $("#senWodsId").kendoWindow(
+            {
+                position: {
+                    top: $(document).scrollTop()
+          
+                }, title: "Psot Warning Dialog"
+            }
+        );
+        $("#msgBoxx").highlightTextarea({
+
+            words: {
+                color: '#ADF0FF',
+                words: ['gmail', 'sex', 'yahoo', 'love', 'email','Gmail','GMAIL','GMail','Yahoo','Love','LOVE','Yahoo','YAHOO','Email','EMAIL']
+
+
+            }
+
+        });
+    }
+</script>
+
+
+

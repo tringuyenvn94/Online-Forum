@@ -1,0 +1,277 @@
+﻿
+
+@using ForumDisscussion.Models
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+         <title>@ViewBag.Title </title>
+        <meta charset="utf-8" />
+    
+  
+
+
+<div class="Toolbar pure-g" style="height: 55px;">
+    <ul class="pure-u-1 u-noPad u-noMargin">
+        
+      
+        	
+        <li class="Toolbar-item is-menu" >
+            @if (Request.IsAuthenticated)
+            {
+                var d=new ForumDataBaseConnectionContext();
+
+                var chechAuthUser = d.ForumUser.SingleOrDefault(m => m.UserName.Equals(User.Identity.Name));
+                if (chechAuthUser != null)
+                {
+                     @Html.ActionLink("PROFILE", "UserAnsQuestionList", "UserHomePage", new{area=""}, htmlAttributes: new { @class = "username Toolbar-button",id="ProfileLink", title = "Manage" })
+     
+                }
+               
+            }
+           
+        </li>
+        
+       
+
+         
+
+        
+     
+  
+         <li class="Toolbar-item stats-what-can-i-access">  @Html.ActionLink("UnAnswered Question", "GetAllUnAnsweredQuestion", "Home",new{area=""},  new { id = "UnasweredQueslink",@class="Toolbar-button" })</li>
+
+      <li class="Toolbar-item stats-what-can-i-access">  @Html.ActionLink("Answered Question", "GetAllAnsweredQuestion", "Home",new{area=""},  new { id = "AsweredQueslink",@class="Toolbar-button" })</li>
+
+      <li class="Toolbar-item stats-what-can-i-access">  @Html.ActionLink("POST QUESTUON", "PostQuestion", "UserQuestions", new { area = "" }, new { id = "QuestionPostlink",@class="Toolbar-button" })</li>
+
+      <li class="Toolbar-item stats-what-can-i-access">  @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { id = "HomePagelink",@class="Toolbar-button" })</li>
+         <li class="Toolbar-item">@Html.ActionLink("Help?","Help","Home",new{area=""},new{@class="Toolbar-button ",id="HelpLink"})</li>
+  
+       
+        <li class="Toolbar-item is-menu" >
+            @if (Request.IsAuthenticated)
+            {
+                @Html.ActionLink("Log off", "LogOff", "Account",new{area=""} ,new { id = "Logoutlink",@class="Toolbar-button" })
+            }
+            @if (!Request.IsAuthenticated)
+            { 
+                <li class="Toolbar-item stats-what-can-i-access">  @Html.ActionLink("Log In", "Login", "Account",new{area=""},  new { id = "LoginLink",@class="Toolbar-button" })</li>
+
+            }
+        </li>
+        
+        @if (Request.IsAuthenticated)
+        {
+            var  d= new AdminDbContext();
+            var checkIsAuthUserIsAnAdmin = d.Admin.Any(x => x.Email.Equals(User.Identity.Name));
+            if (checkIsAuthUserIsAnAdmin)
+            {
+         <li class="Toolbar-item stats-what-can-i-access">  @Html.ActionLink("Admin Home Page", "Index", "Admin",new{area=""},  new { id = "LoginLink",@class="Toolbar-button" })</li>
+
+            }
+        }
+        
+
+    </ul>
+     
+</div>
+
+
+
+
+    
+    @if(Request.IsAuthenticated)
+    {
+        var d=new AdminDbContext();
+        var check = d.Admin.SingleOrDefault(m => m.Email.Equals(User.Identity.Name) && m.Role.Equals("admin"));
+        
+        if (check==null)
+        {
+            
+    <text>
+     
+      
+
+@{
+            var db = new ForumDataBaseConnectionContext();
+
+            ViewBag.userImage = db.ForumUser.SingleOrDefault(m => m.UserName.Equals(User.Identity.Name)).Image;
+    
+}
+        @if (ViewBag.userImage != null)
+        {
+            <img src="data:image/jpg;base64,@Convert.ToBase64String(ViewBag.userImage)" width="70px" height="60" style="position: absolute;top: 8%;right: 3%" class="img-circle" alt=""/>
+    
+        }
+       
+ </text> 
+        }
+
+
+
+
+    } 
+    
+       
+              
+      
+    
+
+ 
+
+ 
+
+       
+      
+        
+       
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+       
+        <style>
+            .demo-section {
+                width: 692px;
+            }
+
+        </style>
+
+        <link href="~/Content/jquery.typeahead.css" rel="stylesheet" />
+        <link href="~/Content/site2-1c6497820a0e2131cab0d9f77ebb693e.css" rel="stylesheet" />    
+        <link href="~/CSS/skeleton.css" rel="stylesheet" />
+        <link href="~/CSS/spectrum.css" rel="stylesheet" />
+      
+    
+        <link href="~/KendoUI/kendo.common.min.css" rel="stylesheet" />
+     
+        <link href="~/KendoUI/kendo.default.min.css" rel="stylesheet" />
+
+         <link href="~/Content/Site.css" rel="stylesheet" />
+        <link href="~/MenuJsCss/styles.css" rel="stylesheet" />
+        <link href="~/Content/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/Content/Widgets/basic.css" rel="stylesheet" />
+        <link href="~/Content/jquery-ui-1.9.2.custom.css" rel="stylesheet" />
+ 
+        <link href="~/Al.css" rel="stylesheet" />
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                             
+                   
+                     </div>
+                <div class="float-right">
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
+              
+       <div  id="divLoading" >
+     <img src="~/Png/ajax-loader.gif"  style="background-position: center;position: relative;left: 40%;top: 10px"/>
+         
+       
+      </div>
+                    
+
+                </div>
+            </div>
+        </header>
+        <div >
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+          
+          </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                 
+                </div>
+            </div>
+        </footer>
+
+                @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/angular")
+        @RenderSection("scripts", required: false)
+  
+        <script src="~/jQxWidegets/jquery-1.11.1.min.js"></script>
+
+    
+        <script src="~/Content/Widgets/jquery.simplemodal.js"></script>
+ <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.imgareaselect.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.fancyupload.js")"></script>
+     <script src="~/Scripts/jquery-ui-1.8.20.js"></script>
+        <script src="~/Content/Menu/bootstrap-transition.js"></script>
+      <script src="~/Content/Menu/bootstrap-dropdown.js"></script>
+        <script src="~/Content/Menu/bootstrap-tab.js"></script>
+       <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/Content/Menu/widgets.js"></script>
+     <script src="~/MenuJsCss/vendor.js"></script>
+        <script src="~/MenuJsCss/cartScroll.js"></script>
+ 
+        <script src="~/jQxWidegets/jqxcore.js"></script>
+        <script src="~/jQxWidegets/jqxnotification.js"></script>
+        <script src="~/jQxWidegets/jqxtooltip.js"></script>
+    <script src="~/jQxWidegets/jqxbuttons.js"></script>
+        <script src="~/js/all.js"></script>
+
+     
+        <script>
+            $("#ProfileLink,#UnasweredQueslink,#AsweredQueslink,#QuestionPostlink,#HomePagelink,#Logoutlink,#LoginLink,#HelpLink").click(function () {
+                loading();
+            });
+            $(function () {
+                $(".btn").css('color', 'black');
+            });
+       
+            $(".search").css('width', '300px');
+            $("#searchButton").css('color', 'black');
+                
+            var tooltip = $("#serbox").kendoTooltip({
+                filter: "a",
+                width: 80,
+                height: 130,
+                position: "top"
+            }).data("kendoTooltip");
+              
+            function loading() {
+                     
+                $('#divLoading').dialog({ title: ' Please Wait...' });
+
+          
+            }
+        </script>
+        <script>
+
+
+    
+            $(".search").kendoAutoComplete({
+                minLength: 2,
+
+
+
+                placeholder: 'Search By Category',
+                dataSource: {
+                    type: "JSON",
+
+                    transport: {
+                        read: "/Home/DisplayCat"
+
+                    },
+                }
+
+            }); 
+
+       
+         
+
+        </script>
+     
+    </body>
+</html>
+
+
+

@@ -1,0 +1,99 @@
+﻿@model IEnumerable<ForumDisscussion.Models.QuestionList>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Forum Questions</h2>
+<style>
+
+     th{text-align: center;font-size: 13px;font-family: Arial;font-weight: bold}
+    td{text-align: center}
+</style>
+
+<table>
+    <tr>
+        <th style="width: 50%">
+                 @Html.DisplayNameFor(model => model.Question)
+            <div>
+                <img src="~/Images/help_circle_blue.png" width="25"/>
+
+            </div> 
+       
+        </th>
+        <th>
+             @Html.DisplayNameFor(model => model.Category)
+            <div> <img src="~/Images/category-item-icon.png" width="25"/></div>
+           
+           
+        </th>
+        <th>
+               @Html.DisplayNameFor(model => model.PostedBy)
+            <div>    <img src="~/Images/user_group(2).png" width="20"/></div>
+        
+         
+        </th>
+        <th>
+            PostedDate
+            <div>
+                
+                
+                <img src="~/Images/Calendar-icon.png" width="25"/>
+                
+
+            </div>
+     
+          
+        </th>
+        <th>
+            Views
+            <div>
+                
+                <img src="~/Images/icon_angry.png" width="25"/>
+            </div>
+          
+           
+        </th>
+
+        <th>
+            Answers
+            <div>  <img src="~/Images/1405880810_app_48.png" width="25" /></div>
+          
+          
+        </th>
+        <th>
+            Action
+            <div>  <img src="~/Images/Actions-mail-receive-icon.png" width="27" /></div>
+          
+          
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Question)
+        </td>
+            <td>
+            @Html.DisplayFor(modelItem => item.Category)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PostedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Posteddate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Views)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Answers)
+        </td>
+        <td>
+            @Html.ActionLink("View", "PostAnswer", new {  id=item.Id }) 
+            <img src="~/Images/link.png" width="25" />
+        </td>
+    </tr>
+}
+
+</table>

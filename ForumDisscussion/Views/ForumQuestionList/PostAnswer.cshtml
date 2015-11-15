@@ -1,0 +1,102 @@
+﻿@using ForumDisscussion.Models
+@model ForumDisscussion.Models.UsersAnsPost
+
+@{
+    ViewBag.Title = "PostAnswer";
+}
+
+<link href="~/Al.css" rel="stylesheet" />
+<h2>Post Your Answer</h2>
+<div>
+    <img src="~/Images/icon_question.png" width="50" />
+    @ViewBag.m
+</div>
+
+
+    @{
+        if (ViewBag.quId!=null)
+        {
+            try
+            {
+                    ForumDataBaseConnectionContext _db = new ForumDataBaseConnectionContext();
+       
+        <div> Answers</div>
+        int qId = ViewBag.quId;
+            ViewBag.U = (from uu in _db.ForumUser
+
+                         from an in _db.Answers
+                         where uu.UserId==an.UserId && an.QuestionId.Equals(qId)
+                       
+                         select new AnsPostedUser() { Answer = an.Answer, Username = uu.UserName, PostedDate = an.AnsweredTimeDate, Image = uu.Image });
+       
+            foreach (AnsPostedUser h in ViewBag.U)
+            {
+              
+                       
+      <div id="content_wrapper" class="content single">
+                           
+                 <div class="post">
+                         <img class="img-circle" src="data:image/jpg;base64,@Convert.ToBase64String(h.Image)" width="70px" height="40"/>
+                    <span id="homAns"> @Html.DisplayFor(m => h.Answer)</span>
+                              
+                    
+                    <br/> <br/>
+               <div style="text-align: right">   <span id="homPostUsr">  @Html.DisplayFor(m => h.Username)</span>
+                      <span id="vId">,Date : </span><span id="homPostUsr">@Html.DisplayFor(m => h.PostedDate)</span>
+                         <span id="vId" style="font-family: Arial;font-weight: bold;font-size: 20px"> @Html.DisplayFor(m => h.Comments)  </span><span><u style="font-family: Arial;font-weight: bold">     @Html.ActionLink("Comments", "PostComment", "Home", new { id = h.AnsId }, new { @class = "comlink" }) </u> </span><span><u style="font-family: Arial;font-weight: bold">     @Html.ActionLink("Comments", "PostComment", "ForumQuestionAns", new { id = h.AnsId }, new { @class = "areaLink" }) </u> </span>
+                                 
+               </div>    
+                 </div>
+
+
+</div> 
+       
+         
+
+            }
+            }
+            catch (Exception msException)
+            {
+  
+                throw;
+            }
+ 
+        }
+
+        else
+        {
+  
+        }
+
+    }
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>UsersAnsPost</legend>
+
+        <div class="editor-label">
+  
+            <label>          <img src="~/Images/ic_post_plus.png" width="60"/>Post Your Answer</label>
+        </div>
+        <div class="editor-field">
+        @*    <input type="te" name="Answer" />*@
+      @Html.TextAreaFor(model => model.Answer,new{id="msgBox"})
+            @Html.ValidationMessageFor(model => model.Answer)
+        </div>
+        <br/>
+        <p>
+            <input type="submit" value="Post" id="mesPostButton" class="btn btn-warning"/>
+        </p>
+    </fieldset>
+}
+
+<div>
+    <img src="~/Images/1405880841_arrow_right_48.png" width="60" />
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@*@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}*@

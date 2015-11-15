@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ForumDbModelStoreContainer" CdmEntityContainer="AnsweredViewDbContext">
+    <EntitySetMapping Name="View_AnsweredQuestion">
+      <EntityTypeMapping TypeName="ForumDbModel.View_AnsweredQuestion">
+        <MappingFragment StoreEntitySet="View_AnsweredQuestion">
+          <ScalarProperty Name="QquestID" ColumnName="QquestID" />
+          <ScalarProperty Name="Question" ColumnName="Question" />
+          <ScalarProperty Name="QcatID" ColumnName="QcatID" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="QuserID" ColumnName="QuserID" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+          <ScalarProperty Name="views" ColumnName="views" />
+          <ScalarProperty Name="Replies" ColumnName="Replies" />
+          <ScalarProperty Name="UuserID" ColumnName="UuserID" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
